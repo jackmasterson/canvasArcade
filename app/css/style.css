@@ -1,0 +1,105 @@
+body {
+    text-align: center;
+    background-color: black;
+}
+
+#loser {
+    display: none;
+    float: left;
+}
+
+#winner {
+    display: none;
+    float: left;
+}
+
+#gameOver {
+    display: none;
+}
+
+#chicken {
+    height: 200px;
+    width: 300px;
+}
+
+#loserimg {
+    height: 200px;
+    width: 300px;
+}
+
+#restart {
+    height: 150px;
+    width: 250px;
+    border-radius: 15px;
+}
+
+#thatsIt {
+    height: 550px;
+    width: 850px;
+}
+
+#scoreboard {
+    float: right;
+    height: 200px;
+    width: 150px;
+    margin: 20px;
+    background-color: gold;
+    padding: 20px;
+    padding-top: 40px;
+    border-radius: 15px;
+    border: 5px solid white;
+}
+
+.char {
+    height: 50px;
+    width: 20px;
+    margin-top: 20px;
+}
+
+#level {
+    background-image: url(..//images/mario.jpg);
+    background-size: 160px, 80px;
+    height: 80px;
+    width: 80px;
+    border-radius: 250px;
+    margin-left: 25px;
+    padding: 10px;
+}
+
+#champion {
+    display: none;
+}
+
+#champimg {
+    height: 620px;
+    width: 600px;
+    border-radius: 10px;
+}
+
+#menu {
+    background-color: gold;
+    height: 400px;
+    width: 700px;
+    margin: auto;
+    margin-bottom: 500px;
+    padding-bottom: 50px;
+    border-radius: 15px;
+}
+
+#charIn {
+    display: inline-block;
+    padding: auto;
+}
+
+.charImg {
+    height: 120px;
+    width: 100px;
+}
+
+.charImg {
+    opacity: 0.5;
+}
+
+.charImg:hover {
+    opacity: 1;
+}
