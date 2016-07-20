@@ -243,11 +243,17 @@ var stats = {
 
 	winner: function() {
     	model.statScreen("images/winner.jpg");
-		stats.render();
+		
 		var len = model.allEnemies().length;
 		var currentLevel = model.level() + 1;
 		if(currentLevel === 4){
 			model.lives.push('life');
+		}
+		if(currentLevel === 7){
+			stats.gameWon();
+		}
+		else{
+			stats.render();
 		}
 		levelUp.render();
 	},
@@ -257,6 +263,13 @@ var stats = {
 		$('canvas').fadeOut(function(){
 			$('.stat').fadeIn();
 		});
+	},
+
+	gameWon: function() {
+		model.statScreen('images/champion.jpg');
+		$('canvas').fadeOut(function(){
+			$('.stat').fadeIn();
+		})
 	},
 
 	render: function() {
