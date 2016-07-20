@@ -71,6 +71,8 @@ var createBugs = function() {
 		}
 	});
 };
+
+
 var Enemy = function(y) {
 	var that = this;
 	this.sprite = 'images/enemy-bug.png';
@@ -147,6 +149,11 @@ Player.prototype.update = function(dt) {
     			})
 
     			bugPos.push(bugPos[0]);
+    			model.allEnemies().forEach(function(en){
+					en.render();
+				});
+
+				model.allEnemies.push(new Enemy(bugPos[0]));
         	}
         	
             stats.init();
@@ -208,20 +215,11 @@ document.addEventListener('keyup', function(e) {
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 var player = new Player();
+
+
 
 ko.applyBindings(viewModel.init());
