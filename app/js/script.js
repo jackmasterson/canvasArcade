@@ -52,7 +52,7 @@ var model = {
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
 //	allMowers: ko.observableArray(),
-	statScreen: ko.observable("images/winner.jpg")
+	statScreen: ko.observable()
 };
 
 var viewModel = {
@@ -137,59 +137,53 @@ var playerSelect = {
 
 
  //detects collisions with obstacles and enemies
-
+//needs refactoring
 Player.prototype.update = function(dt) {
+    
     model.allEnemies().forEach(function(en){
         var equal = player.x == (Math.floor(en.x/100)*100 || Math.ceil(en.x));
-        var ceilEqual = player.x == Math.ceil(en.x/100)*100;
-		var bug = model.enemies[0];
-		bugPos = bug.pos;
-		bugPos.sort(function(){
-			return 0.5 - Math.random();
-		});
-
-		bugPos.push(bugPos[0]);
+      
         if(equal && (player.y == en.y)) {
-        	model.statScreen("images/loser.jpg");
-        	player.x = 200;
-        	player.y = 400;
-            stats.init();
-        }
-        if(player.y == -50){
-        	model.statScreen("images/winner.jpg");
-        	var len = model.allEnemies().length;
-        	var bugPos;
-        	var mowerPos;
 
-        	if(len < 6){
-				model.allEnemies.push(new Enemy(bugPos[0], 'bug'));
-        	}
-
-        	if((len >5) && (len < 7)) {
-        		model.allEnemies.push(new Enemy(310, 'mower'));
-        	}
-        	
-            stats.init();
+            stats.loser();
         }
-
-        if(-1 > player.x){
-        	player.x = 0;
-        }
-        if(player.x > 401){
-        	player.x = 400;
-        }
-
-        if((-1 > player.y) || (player.y > 401)){
-        	player.y = 400;
-        }
-
     });
+
+    if(-1 > player.x){
+    	player.x = 0;
+    }
+    if(player.x > 401){
+    	player.x = 400;
+    }
+
+    if(-1 > player.y){
+    	player.y=400;
+    	stats.winner();
+    }
+    if(player.y > 401){
+    	player.y = 400;
+    }
+
 
 };
 
 var stats = {
 
-	init: function() {
+	loser: function() {
+        model.statScreen("images/loser.jpg");
+       	player.x = 200;
+       	player.y = 400;
+
+		stats.render();
+	},
+
+	winner: function() {
+		console.log('winner!');
+    	model.statScreen("images/winner.jpg");
+		stats.render();
+	},
+
+	render: function() {
 
 		$('.stat').slideDown(function(){
 			$('.stat').slideUp();
