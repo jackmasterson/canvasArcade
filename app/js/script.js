@@ -245,7 +245,10 @@ var stats = {
     	model.statScreen("images/winner.jpg");
 		stats.render();
 		var len = model.allEnemies().length;
-	
+		var currentLevel = model.level() + 1;
+		if(currentLevel === 4){
+			model.lives.push('life');
+		}
 		levelUp.render();
 	},
 
