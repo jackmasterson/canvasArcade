@@ -37,8 +37,6 @@ var model = {
 			classed: 'ironman'
 		}
 	],
-	player: ko.observableArray(),
-
 	enemies: [
 		{
 			name: 'bug',
@@ -51,7 +49,7 @@ var model = {
 			pos: [310, 400]
 		}
 	],
-
+	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
 	statScreen: ko.observable("images/winner.jpg")
 };
@@ -139,6 +137,18 @@ Player.prototype.update = function(dt) {
         }
         if(player.y == -50){
         	model.statScreen("images/winner.jpg");
+        	var len = model.allEnemies().length;
+        	var bugPos;
+        	if((len > -1) && (len < 6)){
+    			var bug = model.enemies[0];
+    			bugPos = model.enemies[0].pos;
+    			bugPos.sort(function(){
+    				return 0.5 - Math.random()
+    			})
+
+    			bugPos.push(bugPos[0]);
+        	}
+        	
             stats.init();
         }
 
