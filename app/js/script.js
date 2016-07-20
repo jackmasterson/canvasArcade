@@ -140,20 +140,20 @@ Player.prototype.update = function(dt) {
             stats.init();
         }
 
-        if((-1 < player.x) && (player.x < 401)){
-        	
+        if(-1 > player.x){
+        	player.x = 0;
         }
-        else{
-        	console.log('out of bounds!');
-        	console.log(player.x);
+        if(player.x > 401){
+        	player.x = 400;
+        }
 
-        }
         if((-1 < player.y) && (player.y < 401)){
         	
         }
         else {
         	console.log('out of bounds!');
-        	console.log(player.y);
+        	console.log('y coord', player.y);
+        	player.y == 400;
         }
 
     });
