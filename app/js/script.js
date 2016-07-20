@@ -147,13 +147,8 @@ Player.prototype.update = function(dt) {
         	player.x = 400;
         }
 
-        if((-1 < player.y) && (player.y < 401)){
-        	
-        }
-        else {
-        	console.log('out of bounds!');
-        	console.log('y coord', player.y);
-        	player.y == 400;
+        if((-1 > player.y) || (player.y > 401)){
+        	player.y = 400;
         }
 
     });
