@@ -57,10 +57,7 @@ var model = {
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
 	allObstacles: ko.observable(),
-	lives: [{
-		amount: 3,
-		src: 'images/char-boy.png'
-	}],
+	lives: ko.observableArray(),
 //	allMowers: ko.observableArray(),
 	statScreen: ko.observable(),
 	level: ko.observable(1)
@@ -71,11 +68,20 @@ var viewModel = {
 	init: function(){
 		createBugs();
 		levelUp.init();
+		lively.init();
 
 	}
 
 };
 
+var lively = {
+
+	init: function() {
+		model.lives.push(['life', 'life', 'life']);
+		console.log(model.lives()[0]);
+
+	}
+}
 var levelUp = {
 
 	init: function() {
@@ -173,6 +179,7 @@ var playerSelect = {
 		$('.menu').fadeOut(function(){
 			$('canvas').fadeIn();
 			$('.level').fadeIn();
+			$('.lives').fadeIn();
 		});
 	
 		startMeUp();

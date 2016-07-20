@@ -30,8 +30,8 @@
         <h3>Level:</h3>
         <h4 class="level-num" data-bind="text: model.level"></h4>
     </div>
-    <div class="lives" data-bind="foreach: model.lives">
-        <img class="lives-img" data-bind="attr: {src: src}">
+    <div class="lives" data-bind="foreach: model.lives()[0]">
+        <img class="lives-img" src="images/char-boy.png">
     </div>
     <!--build:js js/script.min.js-->
     <script src="js/lib/jquery.js"></script>
