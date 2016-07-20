@@ -51,7 +51,7 @@ var model = {
 	],
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
-	allMowers: ko.observableArray(),
+//	allMowers: ko.observableArray(),
 	statScreen: ko.observable("images/winner.jpg")
 };
 
@@ -67,36 +67,48 @@ var createBugs = function() {
 	model.enemies.forEach(function(en){
 		if(en.name == 'bug'){
 			en.pos.forEach(function(posit){
-				model.allEnemies.push(new Enemy(posit));
+				model.allEnemies.push(new Enemy(posit, 'bug'));
 			})
 		}
 	});
 };
 
 
-var Enemy = function(y) {
+var Enemy = function(y, name) {
 	var that = this;
-	this.sprite = 'images/enemy-bug.png';
+	var time, enemyNum;
+	
+	if(name == 'bug'){
+		this.sprite = 'images/enemy-bug.png';
+		this.y = y;
+	}
+	else{
+		this.sprite = 'images/mower.png';
+		this.y = 310;
+	}
+	
 	this.x = 100;
-	this.y = y;
-
 };
 
 //var allEnemies = [new Enemy(), new Enemy()];
 
 Enemy.prototype.update = function() {
-    var enemyNum, speed;
     var time = new Date().getTime() * (0.0002);
     var len = model.allEnemies().length;
-
+    var enemyNum;
     for (var i = 0; i < len; i++) {
+    	var speed = (Math.tan(time * enemyNum) * 600 + 100);
         enemyNum = i + 1;
-        speed = (Math.tan(time * enemyNum) * 600 + 100);
-        model.allEnemies()[i].x = speed;
+        en = model.allEnemies()[i];
+        if(en.sprite == 'images/enemy-bug.png'){
+        	en.x = speed;
+        }
+        else{
+        	en.x = -speed;
+        }
+        
     }
 };
-
-
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -104,45 +116,11 @@ Enemy.prototype.render = function() {
         this.x, this.y);
 };
 
-
-
-
 var Player = function() {
 
     this.sprite = model.player();
     this.x = 200;
     this.y = 400;
-};
-
-var Mower = function() {
-
-	this.sprite = model.enemies[1].src;
-	this.x = 400;
-	this.y = 310;
-};
-
-Mower.prototype.update = function() {
-    var enemyNum, speed;
-    var time = new Date().getTime() * (0.0002);
-    console.log('update');
-
-    var len = model.allMowers().length;
-
-    for (var i = 0; i < len; i++) {
-        enemyNum = i + 1;
-        speed = (Math.tan(time * enemyNum) * 600 + 100);
-        model.allMowers()[i].x = -speed;
-        
-
-
-     
-
-    }
-};
-
-Mower.prototype.render = function() {
-	ctx.drawImage(Resources.get(this.sprite),
-		this.x, this.y);
 };
 
 var playerSelect = {
@@ -190,10 +168,10 @@ Player.prototype.update = function(dt) {
 					en.render();
 				});
 
-				model.allEnemies.push(new Enemy(bugPos[0]));
+				model.allEnemies.push(new Enemy(bugPos[0], 'bug'));
         	}
 
-        	if(len > 2) {
+        	if(len > 4) {
         		var mower = model.enemies[1];
         		mowerPos = mower.pos;
         		mowerPos.sort(function(){
@@ -205,7 +183,7 @@ Player.prototype.update = function(dt) {
         			mow.render();
         		});
 
-        		model.allMowers.push(new Mower(mowerPos[0]));
+        		model.allEnemies.push(new Enemy(mowerPos[0], 'mower'));
 
         	}
         	

@@ -103,9 +103,9 @@ var Engine = (function(global) {
         });
         player.update();
 
-        model.allMowers().forEach(function(mower) {
+       /* model.allMowers().forEach(function(mower) {
             mower.update(dt);
-        });
+        });*/
 
     }
 
@@ -174,7 +174,7 @@ var Engine = (function(global) {
             obstacle.render();
         });*/
 
-        model.allMowers().forEach(function(mower) {
+        /*model.allMowers().forEach(function(mower) {
             mower.render();
         });
        /* allLives.forEach(function(life) {
