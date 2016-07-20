@@ -17,6 +17,9 @@ h3,
 h4 {
   margin: 0; }
 
+canvas {
+  display: none; }
+
 #loser {
   display: none;
   float: left; }

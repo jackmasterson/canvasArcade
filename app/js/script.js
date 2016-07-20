@@ -109,17 +109,15 @@ var Player = function() {
 };
 
 var playerSelect = {
-	init: function(clicked) {
-		console.log(clicked)
-		clicked.jqClass = "."+clicked.classed;
 	
-		
-		
+	init: function(clicked) {
+	
 		model.player.push(clicked.src);
 
-		$('.menu').fadeOut();
-		
-
+		$('.menu').fadeOut(function(){
+			$('canvas').fadeIn();
+		});
+	
 		startMeUp();
 	}
 };
