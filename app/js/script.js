@@ -41,12 +41,12 @@ var model = {
 		{
 			name: 'bug',
 			src: 'images/enemy-bug.png',
-			pos: [40, 130, 220]
+			pos: [40, 130, 220, 40, 130]
 		},
 		{
 			name: 'mower',
 			src: 'images/mower.png',
-			pos: [310, 400]
+			pos: [310]
 		}
 	],
 	player: ko.observableArray(),
@@ -96,17 +96,15 @@ Enemy.prototype.update = function() {
     var time = new Date().getTime() * (0.0002);
     var len = model.allEnemies().length;
     var enemyNum;
+
     for (var i = 0; i < len; i++) {
     	var speed = (Math.tan(time * enemyNum) * 600 + 100);
         enemyNum = i + 1;
         en = model.allEnemies()[i];
-        if(en.sprite == 'images/enemy-bug.png'){
-        	en.x = speed;
-        }
-        else{
-        	en.x = -speed;
-        }
-        
+        en.x = speed;
+  		if(en.sprite == 'images/mower.png'){
+  			en.x = -speed;
+  		}
     }
 };
 
@@ -144,7 +142,13 @@ Player.prototype.update = function(dt) {
     model.allEnemies().forEach(function(en){
         var equal = player.x == (Math.floor(en.x/100)*100 || Math.ceil(en.x));
         var ceilEqual = player.x == Math.ceil(en.x/100)*100;
+		var bug = model.enemies[0];
+		bugPos = bug.pos;
+		bugPos.sort(function(){
+			return 0.5 - Math.random();
+		});
 
+		bugPos.push(bugPos[0]);
         if(equal && (player.y == en.y)) {
         	model.statScreen("images/loser.jpg");
         	player.x = 200;
@@ -156,35 +160,13 @@ Player.prototype.update = function(dt) {
         	var len = model.allEnemies().length;
         	var bugPos;
         	var mowerPos;
-        	if((len > -1) && (len < 6)){
-    			var bug = model.enemies[0];
-    			bugPos = bug.pos;
-    			bugPos.sort(function(){
-    				return 0.5 - Math.random();
-    			});
 
-    			bugPos.push(bugPos[0]);
-    			model.allEnemies().forEach(function(en){
-					en.render();
-				});
-
+        	if(len < 6){
 				model.allEnemies.push(new Enemy(bugPos[0], 'bug'));
         	}
 
-        	if(len > 4) {
-        		var mower = model.enemies[1];
-        		mowerPos = mower.pos;
-        		mowerPos.sort(function(){
-        			return 0.5 - Math.random();
-        		});
-
-        		mowerPos.push(mowerPos[0]);
-        		model.allEnemies().forEach(function(mow){
-        			mow.render();
-        		});
-
-        		model.allEnemies.push(new Enemy(mowerPos[0], 'mower'));
-
+        	if((len >5) && (len < 7)) {
+        		model.allEnemies.push(new Enemy(310, 'mower'));
         	}
         	
             stats.init();
