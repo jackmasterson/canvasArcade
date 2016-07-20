@@ -106,14 +106,11 @@ h4 {
     padding: auto;
 }
 
-#char-indiv {
-    display: inline;
-}
-
-.char-div {
-    width: 15vw;
+.charIndiv {
     display: inline-block;
-    float: left;
+    padding-left: 0;
+    width: 15vw;
+    cursor: pointer;
 }
 
 .char-img {

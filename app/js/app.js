@@ -1,54 +1,22 @@
  // Enemies our player must avoid
 var Enemy = function(y) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
 
     this.sprite = 'images/enemy-bug.png';
     this.x = 100;
     this.y = y;
 };
 
-
-
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
 
-    //enemy speed 
 
-    var time = new Date().getTime() * (0.0002);
+//the argument is the 'y' value of the bugs when initiated;
+//the 'x' value is always '100', per above
 
-    for (var i = 0; i < allEnemies.length; i++) {
-        //   console.log(allEnemies[0].x);
-        allEnemies[i].x = (Math.tan(time) * 600 + 10);
 
-        var speed = (Math.tan(time) * 600 + 100);
-
-        allEnemies[0].x = speed + 1000;
-        allEnemies[1].x = speed - 1000;
-        allEnemies[3].x = (Math.tan(time * 0.05) * 600 + 100);
-        allEnemies[4].x = (Math.tan(time * 2.05) * 600 + 100);
-        allEnemies[i].x = speed - (time * 500);
-    }
-};
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite),
-        this.x, this.y);
-};
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+//controls which character we are
+//duplicated in script.js for the future's sake
 var Player = function() {
-
     this.sprite = ['images/char-cat-girl.png'];
     this.x = 200;
     this.y = 400;
@@ -57,20 +25,12 @@ var Player = function() {
 
 Player.prototype.update = function(dt) {
 
-    //detects if there is a collision between the player and either the
-    //water or an enemy/obstacle by comparing each's x and y coordinates.
-    //if they all equal the same values, then it initiates the startOver
-    //function, resetting the player's x and y coordinates and adding to
-    //either the Losses or the Levels value
-    //detects if there is a collision between the player and either the
-    //water or an enemy/obstacle by comparing each's x and y coordinates.
-    //if they all equal the same values, then it initiates the startOver
-    //function, resetting the player's x and y coordinates and adding to
-    //either the Losses or the Levels value
+    //detects collisions with obstacles and enemies
 
     Player.prototype.collisionDetection = function() {
-        for (var c = 0; c < allEnemies.length; c++) {
-            var en = allEnemies[c];
+
+        for (var c = 0; c < model.allEnemies().length; c++) {
+            var en = model.allEnemies()[c];
 
             var plCoord = [player.x, player.y];
             var enCoord = [en.x, en.y];
@@ -290,6 +250,10 @@ Life.prototype.render = function() {
 
 //the following works to set up the Game Menu, where you can select
 // a character and start the game
+
+
+// commenting out for now, not sure what it's doing
+/*
 var Menu = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -305,11 +269,12 @@ Menu.prototype.render = function() {
     ctx2.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var menu = new Menu();
+var menu = new Menu();*/
 
-var allEnemies = [new Enemy(40), new Enemy(220), new Enemy(130),
+/*var allEnemies = [new Enemy(40), new Enemy(220), new Enemy(130),
     new Enemy(40), new Enemy(220), new Enemy(130), new Enemy()
-];
+];*/
+
 
 var player = new Player();
 

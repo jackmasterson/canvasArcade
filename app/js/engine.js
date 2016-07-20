@@ -14,6 +14,7 @@
  * a little simpler to work with.
  */
 
+function startMeUp(){
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -42,6 +43,7 @@ var Engine = (function(global) {
          * would be the same for everyone (regardless of how fast their
          * computer is) - hurray time!
          */
+
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
@@ -94,7 +96,9 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        
+        
+        model.allEnemies().forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update();
@@ -160,7 +164,7 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allEnemies.forEach(function(enemy) {
+        model.allEnemies().forEach(function(enemy) {
             enemy.render();
         });
 
@@ -215,3 +219,4 @@ var Engine = (function(global) {
      */
     global.ctx = ctx;
 })(this);
+};
