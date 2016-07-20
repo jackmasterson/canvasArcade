@@ -10,26 +10,18 @@
     <!--endbuild-->
 </head>
 <body>
-    <div id="champion">
-    	<img id="champimg" src="images/champion.jpg">
-    </div>
-    <div id="gameOver">
-        <button type="button" onClick="window.location.reload();" id="restart">
-            <h1>Try Again</h1>
-        </button>
-        <img id="thatsIt" src="images/gameover.jpg">
-    </div>
-    <div id="loser"><img id="loserimg" src="images/loser.jpg">
-    </div>
-    <div id="winner"><img id="chicken" src="images/winner.jpg">
-    </div>
-    <div id="scoreboard">
-        Losses:
-        <h1 id="losses">0</h1> Level:
-        <div id="level">
-            <h1 id="wins">1</h1>
+    <div class="menu">
+        <h1>Choose Your Character</h1>  
+        <div data-bind="foreach: model.characters">
+            <ul class="char-div">
+                <li id="char-indiv" data-bind="attr: {'class': id}">
+                    <img class="char-img" data-bind="attr: {src: src}">
+                </li>
+                <li>
+                    <span class="char-name" data-bind="text: name"></span>
+                </li>
+            </ul>
         </div>
-        <div id="lives"></div>
     </div>
     <!--build:js js/script.min.js-->
     <script src="js/lib/jquery.js"></script>
@@ -38,6 +30,7 @@
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
     <script src="js/menu.js"></script>
+    <script src="js/script.js"></script>
     <!--endbuild-->
 
 </body>

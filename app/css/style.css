@@ -11,6 +11,12 @@
 body {
   background-color: black; }
 
+h1,
+h2,
+h3,
+h4 {
+  margin: 0; }
+
 #loser {
   display: none;
   float: left; }
@@ -72,25 +78,32 @@ body {
   width: 600px;
   border-radius: 10px; }
 
-#menu {
+.menu {
   background-color: gold;
   height: 400px;
   width: 700px;
   margin: auto;
-  margin-bottom: 500px;
-  padding-bottom: 50px;
   border-radius: 15px; }
 
 #charIn {
   display: inline-block;
   padding: auto; }
 
-.charImg {
-  height: 120px;
-  width: 100px; }
+#char-indiv {
+  display: inline; }
 
-.charImg {
+.char-div {
+  width: 15vw;
+  display: inline-block;
+  float: left; }
+
+.char-img {
+  height: 120px;
+  width: 100px;
   opacity: 0.5; }
 
-.charImg:hover {
+.char-name {
+  width: 100px; }
+
+.char-img:hover {
   opacity: 1; }
