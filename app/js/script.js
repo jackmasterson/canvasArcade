@@ -37,7 +37,7 @@ var model = {
 			classed: 'ironman'
 		}
 	],
-	sprite: ko.observableArray(),
+	player: ko.observableArray(),
 
 	enemies: [
 		{
@@ -59,19 +59,9 @@ var viewModel = {
 	
 	init: function(){
 		createBugs();
-		startMeUp();
 	}
 
 };
-
-var Enemy = function(y) {
-	var that = this;
-	this.sprite = 'images/enemy-bug.png';
-	this.x = 100;
-	this.y = y;
-
-};
-
 var createBugs = function() {
 
 	model.enemies.forEach(function(en){
@@ -82,7 +72,13 @@ var createBugs = function() {
 		}
 	});
 };
+var Enemy = function(y) {
+	var that = this;
+	this.sprite = 'images/enemy-bug.png';
+	this.x = 100;
+	this.y = y;
 
+};
 
 //var allEnemies = [new Enemy(), new Enemy()];
 
@@ -104,9 +100,10 @@ Enemy.prototype.render = function() {
         this.x, this.y);
 };
 
+
 var Player = function() {
 
-    this.sprite = model.sprite();
+    this.sprite = model.player();
     this.x = 200;
     this.y = 400;
 };
@@ -115,17 +112,49 @@ var playerSelect = {
 	init: function(clicked) {
 		console.log(clicked)
 		clicked.jqClass = "."+clicked.classed;
-
+	
 		
 		
-		model.sprite.push(clicked.src);
-		console.log(model.sprite());
-		this.player = new Player();
+		model.player.push(clicked.src);
 
 		$('.menu').fadeOut();
+		
+
+		startMeUp();
 	}
 };
 
 
+ //detects collisions with obstacles and enemies
+
+Player.prototype.update = function(dt) {
+    Player.prototype.collisionDetection = function() {
+
+        for (var c = 0; c < model.allEnemies().length; c++) {
+            var en = model.allEnemies()[c];
+
+            var plCoord = [player.x, player.y];
+            var enCoord = [en.x, en.y];
+
+            if (player.x == Math.floor(en.x) && player.y == en.y) {
+                Player.prototype.youLose();
+            } else {
+                if (player.x == Math.ceil(en.x) && player.y == en.y) {
+                    Player.prototype.youLose();
+                }
+                if (player.y == -50) {
+                    Player.prototype.youWin();
+                }
+            }
+        }
+     
+    };
+
+    Player.prototype.collisionDetection();
+};
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+var player = new Player();
 
 ko.applyBindings(viewModel.init());

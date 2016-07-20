@@ -15,6 +15,7 @@
  */
 
 function startMeUp(){
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -97,15 +98,14 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         
-        
         model.allEnemies().forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update();
 
-        allMowers.forEach(function(mower) {
+     /*   allMowers.forEach(function(mower) {
             mower.update(dt);
-        });
+        });*/
 
     }
 
@@ -170,7 +170,7 @@ var Engine = (function(global) {
 
         player.render();
 
-        allObstacles.forEach(function(obstacle) {
+      /*  allObstacles.forEach(function(obstacle) {
             obstacle.render();
         });
 
@@ -179,7 +179,7 @@ var Engine = (function(global) {
         });
         allLives.forEach(function(life) {
             life.render();
-        });
+        });*/
     }
 
     /* This function does nothing but it could have been a good place to
