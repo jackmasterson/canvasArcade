@@ -103,9 +103,9 @@ var Engine = (function(global) {
         });
         player.update();
 
-     /*   allMowers.forEach(function(mower) {
+        model.allMowers().forEach(function(mower) {
             mower.update(dt);
-        });*/
+        });
 
     }
 
@@ -172,12 +172,12 @@ var Engine = (function(global) {
 
       /*  allObstacles.forEach(function(obstacle) {
             obstacle.render();
-        });
+        });*/
 
-        allMowers.forEach(function(mower) {
+        model.allMowers().forEach(function(mower) {
             mower.render();
         });
-        allLives.forEach(function(life) {
+       /* allLives.forEach(function(life) {
             life.render();
         });*/
     }

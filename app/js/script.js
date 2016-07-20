@@ -51,6 +51,7 @@ var model = {
 	],
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
+	allMowers: ko.observableArray(),
 	statScreen: ko.observable("images/winner.jpg")
 };
 
@@ -95,6 +96,8 @@ Enemy.prototype.update = function() {
     }
 };
 
+
+
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite),
@@ -102,11 +105,44 @@ Enemy.prototype.render = function() {
 };
 
 
+
+
 var Player = function() {
 
     this.sprite = model.player();
     this.x = 200;
     this.y = 400;
+};
+
+var Mower = function() {
+
+	this.sprite = model.enemies[1].src;
+	this.x = 400;
+	this.y = 310;
+};
+
+Mower.prototype.update = function() {
+    var enemyNum, speed;
+    var time = new Date().getTime() * (0.0002);
+    console.log('update');
+
+    var len = model.allMowers().length;
+
+    for (var i = 0; i < len; i++) {
+        enemyNum = i + 1;
+        speed = (Math.tan(time * enemyNum) * 600 + 100);
+        model.allMowers()[i].x = -speed;
+        
+
+
+     
+
+    }
+};
+
+Mower.prototype.render = function() {
+	ctx.drawImage(Resources.get(this.sprite),
+		this.x, this.y);
 };
 
 var playerSelect = {
@@ -141,12 +177,13 @@ Player.prototype.update = function(dt) {
         	model.statScreen("images/winner.jpg");
         	var len = model.allEnemies().length;
         	var bugPos;
+        	var mowerPos;
         	if((len > -1) && (len < 6)){
     			var bug = model.enemies[0];
-    			bugPos = model.enemies[0].pos;
+    			bugPos = bug.pos;
     			bugPos.sort(function(){
-    				return 0.5 - Math.random()
-    			})
+    				return 0.5 - Math.random();
+    			});
 
     			bugPos.push(bugPos[0]);
     			model.allEnemies().forEach(function(en){
@@ -154,6 +191,22 @@ Player.prototype.update = function(dt) {
 				});
 
 				model.allEnemies.push(new Enemy(bugPos[0]));
+        	}
+
+        	if(len > 2) {
+        		var mower = model.enemies[1];
+        		mowerPos = mower.pos;
+        		mowerPos.sort(function(){
+        			return 0.5 - Math.random();
+        		});
+
+        		mowerPos.push(mowerPos[0]);
+        		model.allEnemies().forEach(function(mow){
+        			mow.render();
+        		});
+
+        		model.allMowers.push(new Mower(mowerPos[0]));
+
         	}
         	
             stats.init();
