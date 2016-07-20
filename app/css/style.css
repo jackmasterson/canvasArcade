@@ -102,6 +102,11 @@ canvas {
   height: 5vh;
   width: 2vw; }
 
+.again {
+  display: none;
+  position: absolute;
+  right: 22vw; }
+
 #champion {
   display: none; }
 

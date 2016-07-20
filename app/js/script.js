@@ -178,7 +178,9 @@ var Obstacle = function(x, y) {
 var playerSelect = {
 	
 	init: function(clicked) {
-	
+
+		model.player.removeAll();
+
 		model.player.push(clicked.src);
 
 		$('.menu').fadeOut(function(){
@@ -267,6 +269,7 @@ var stats = {
 		model.statScreen('images/gameover.jpg');
 		$('canvas').fadeOut(function(){
 			$('.stat').fadeIn();
+			$('.again').fadeIn();
 		});
 	},
 
@@ -287,6 +290,18 @@ var stats = {
 
 };
 
+var retry = {
+
+	init: function(){
+		var cvs = $('canvas');
+		ctx.clearRect(0, 0, cvs.width, cvs.height);
+		$('canvas').stop();
+		$('.stat').fadeOut(function(){
+			$('.menu').fadeIn();
+		});
+	}
+};
+
 Obstacle.prototype.update = function() {
 	//console.log(model.allObstacles());
 	var obst = model.allObstacles();
@@ -301,7 +316,7 @@ Obstacle.prototype.update = function() {
 	if(equalX && equalY){
 		stats.loser();
 	}
-}
+};
 
 
 Player.prototype.handleInput = function() {
