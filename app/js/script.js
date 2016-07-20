@@ -126,30 +126,74 @@ var playerSelect = {
  //detects collisions with obstacles and enemies
 
 Player.prototype.update = function(dt) {
-    Player.prototype.collisionDetection = function() {
+    model.allEnemies().forEach(function(en){
+        var equal = player.x == (Math.floor(en.x/100)*100 || Math.ceil(en.x));
+        var ceilEqual = player.x == Math.ceil(en.x/100)*100;
 
-        for (var c = 0; c < model.allEnemies().length; c++) {
-            var en = model.allEnemies()[c];
-
-            var plCoord = [player.x, player.y];
-            var enCoord = [en.x, en.y];
-
-            if (player.x == Math.floor(en.x) && player.y == en.y) {
-                Player.prototype.youLose();
-            } else {
-                if (player.x == Math.ceil(en.x) && player.y == en.y) {
-                    Player.prototype.youLose();
-                }
-                if (player.y == -50) {
-                    Player.prototype.youWin();
-                }
-            }
+        if(equal && (player.y == en.y)) {
+            stats.lose()
         }
-     
+        if(player.y == -50){
+            stats.win()
+        }
+    });
+
+};
+
+
+var stats = {
+
+	lose: function() {
+		console.log('you lose!');
+
+	},
+
+	win: function() {
+		console.log('you win!')
+	}
+}
+
+
+
+Player.prototype.handleInput = function() {
+
+    if (event.keyCode == 37) {
+        this.x -= 100;
+    }
+    if (event.keyCode == 39) {
+        this.x += 100;
+    }
+    if (event.keyCode == 38) {
+        this.y -= 90;
+    }
+    if (event.keyCode == 40) {
+        this.y += 90;
+    }
+};
+
+document.addEventListener('keyup', function(e) {
+    var allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down'
     };
 
-    Player.prototype.collisionDetection();
-};
+    player.handleInput(allowedKeys[e.keyCode]);
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
