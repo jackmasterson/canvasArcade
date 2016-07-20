@@ -92,11 +92,16 @@ var levelUp = {
 
 		++level;
 		model.level(level);
+	//	console.log(Math.random() * 10);
+		var yArray = [400, 310, 220, 130, 40]
+		var xArray = [400, 300, 200, 100]
+		var obstY = yArray[Math.floor(Math.random() 
+			* yArray.length)];
+		var obstX = xArray[Math.floor(Math.random()
+			* xArray.length)];
 
 		if(level > 2){
-			var obstX, obstY;
-			obstX = Math.ceil(Math.random() * 400) + 1;
-			obstY = Math.floor(Math.random() * 400) + 1;
+		
 			obstacle = new Obstacle(obstX, obstY);		
 			model.allObstacles(obstacle);
 			obstacle.update();
@@ -287,11 +292,14 @@ Obstacle.prototype.update = function() {
 	var obst = model.allObstacles();
 	var obstX = obst.x;
 	var obstY = obst.y;
-	var equalX = (Math.floor(obstX/100)*100 || Math.ceil(obstX)) == player.x;
-	var equalY = (Math.floor(obstY/100)*100 || Math.ceil(obstY)) == player.x;
+	var playerY = player.y + 90;
+	console.log(obst.y, "obstacle y");
+	console.log(player.y, "player y");
+	var equalX = obst.x == player.x;
+	var equalY = obst.y == playerY;
 	
 	if(equalX && equalY){
-		console.log('equal!');
+		stats.loser();
 	}
 }
 
