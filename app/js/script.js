@@ -57,6 +57,10 @@ var model = {
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
 	allObstacles: ko.observable(),
+	lives: [{
+		amount: 3,
+		src: 'images/char-boy.png'
+	}],
 //	allMowers: ko.observableArray(),
 	statScreen: ko.observable(),
 	level: ko.observable(1)
@@ -76,15 +80,14 @@ var levelUp = {
 
 	init: function() {
 		level = model.level();
-		console.log(level);
 	},
 
 	render: function() {
-		//console.log(this);
+
 		++level;
 		model.level(level);
-		//console.log(level);
-		if(level >3){
+
+		if(level > 2){
 			var obstX, obstY;
 			obstX = Math.ceil(Math.random() * 400) + 1;
 			obstY = Math.floor(Math.random() * 400) + 1;
@@ -245,7 +248,6 @@ Obstacle.prototype.update = function() {
 	var obst = model.allObstacles();
 	var obstX = obst.x;
 	var obstY = obst.y;
-	console.log(obst.x, player.x);
 	var equalX = (Math.floor(obstX/100)*100 || Math.ceil(obstX)) == player.x;
 	var equalY = (Math.floor(obstY/100)*100 || Math.ceil(obstY)) == player.x;
 	

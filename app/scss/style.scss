@@ -108,6 +108,20 @@ canvas {
     font-size: 30px;
 }
 
+.lives {
+    height: 5vh;
+    width: 8vw;
+    position: absolute;
+    bottom: 12vh;
+    right: 12vw;
+
+}
+
+.lives-img {
+    height: 5vh;
+    width: 3vw;
+}
+
 #champion {
     display: none;
 }
