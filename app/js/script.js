@@ -47,10 +47,16 @@ var model = {
 			name: 'mower',
 			src: 'images/mower.png',
 			pos: [310]
+		},
+		{
+			name: 'obstacle',
+			src: 'images/monster.png',
+			pos: [40, 130, 220]
 		}
 	],
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
+	allObstacles: ko.observableArray(),
 //	allMowers: ko.observableArray(),
 	statScreen: ko.observable()
 };
@@ -121,6 +127,13 @@ var Player = function() {
     this.y = 400;
 };
 
+var Obstacle = function(x, y) {
+
+	this.sprite = ["images/enemy.png"];
+	this.x = x;
+	this.y = y;
+};
+
 var playerSelect = {
 	
 	init: function(clicked) {
@@ -178,9 +191,16 @@ var stats = {
 	},
 
 	winner: function() {
-		console.log('winner!');
     	model.statScreen("images/winner.jpg");
 		stats.render();
+		var len = model.allEnemies().length;
+		if(len < 7){
+			obstacle = new Obstacle(400, 200);
+			model.allObstacles.push(obstacle);
+			model.allObstacles().forEach(function(){
+				obstacle.render();
+			})
+		}
 	},
 
 	render: function() {
@@ -192,7 +212,7 @@ var stats = {
 
 };
 
-
+var obstacle;
 
 Player.prototype.handleInput = function() {
 
@@ -223,9 +243,18 @@ document.addEventListener('keyup', function(e) {
 });
 
 Player.prototype.render = function() {
+	
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+Obstacle.prototype.render = function() {
+	
+	ctx.drawImage(Resources.get(this.sprite),
+		this.x, this.y);
+};
 var player = new Player();
+
+
 
 
 
