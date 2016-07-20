@@ -52,7 +52,9 @@ var model = {
 		}
 	],
 
-	allEnemies: ko.observableArray()
+	allEnemies: ko.observableArray(),
+
+	statScreen: ko.observable("images/winner.jpg")
 };
 
 var viewModel = {
@@ -131,10 +133,12 @@ Player.prototype.update = function(dt) {
         var ceilEqual = player.x == Math.ceil(en.x/100)*100;
 
         if(equal && (player.y == en.y)) {
-            stats.lose()
+        	model.statScreen("images/loser.jpg");
+            stats.init();
         }
         if(player.y == -50){
-            stats.win()
+        	model.statScreen("images/winner.jpg");
+            stats.init();
         }
     });
 
@@ -143,15 +147,14 @@ Player.prototype.update = function(dt) {
 
 var stats = {
 
-	lose: function() {
-		console.log('you lose!');
+	init: function() {
 
-	},
-
-	win: function() {
-		console.log('you win!')
+		$('.stat').slideDown(function(){
+			$('.stat').slideUp();
+		});
 	}
-}
+
+};
 
 
 

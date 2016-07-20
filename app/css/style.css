@@ -24,6 +24,17 @@ canvas {
   display: none;
   float: left; }
 
+.stat {
+  position: fixed;
+  z-index: 5;
+  left: 25vw;
+  top: 20vh;
+  display: none; }
+
+.stat-img {
+  height: 50vh;
+  width: 50vw; }
+
 #winner {
   display: none;
   float: left; }

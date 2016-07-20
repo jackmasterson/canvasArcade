@@ -23,6 +23,9 @@
             </ul>
         </div>
     </div>
+    <div class="stat" data-bind="if: model.statScreen">
+        <img class="stat-img" data-bind="attr: {src: model.statScreen}">
+    </div>
     <!--build:js js/script.min.js-->
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/knockout-3.2.0.js"></script>
