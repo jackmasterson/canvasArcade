@@ -65,6 +65,7 @@ var viewModel = {
 	
 	init: function(){
 		createBugs();
+
 	}
 
 };
@@ -155,12 +156,16 @@ Player.prototype.update = function(dt) {
     
     model.allEnemies().forEach(function(en){
         var equal = player.x == (Math.floor(en.x/100)*100 || Math.ceil(en.x));
-      
+
         if(equal && (player.y == en.y)) {
 
             stats.loser();
         }
     });
+
+    if(model.allObstacles() !== undefined){
+    	obstacle.update();
+    }
 
     if(-1 > player.x){
     	player.x = 0;
@@ -196,15 +201,12 @@ var stats = {
 		var len = model.allEnemies().length;
 
 		if(len < 7){
-
 			var obstX, obstY;
 			obstX = Math.floor(Math.random() * 400);
 			obstY = Math.floor(Math.random() * 400);
 			obstacle = new Obstacle(obstX, obstY);		
 			model.allObstacles(obstacle);
-			//console.log(model.allObstacles());
-
-
+			obstacle.update();
 		}	
 	},
 
@@ -217,6 +219,25 @@ var stats = {
 	}
 
 };
+
+Obstacle.prototype.update = function() {
+	//console.log(model.allObstacles());
+	var obst = model.allObstacles();
+	var obstX = obst.x;
+	var obstY = obst.y;
+	console.log(obst.x, player.x);
+	var equalX = (Math.floor(obstX/100)*100 || Math.ceil(obstX)) == player.x;
+	var equalY = (Math.floor(obstY/100)*100 || Math.ceil(obstY)) == player.x;
+	
+	if(equalX && equalY){
+		console.log('equal!');
+	}
+	console.log('ya');
+
+	//if((Math.floor(obstX/100)*100) == player.x){
+	//	console.log('equal!')
+	//} 
+}
 
 
 Player.prototype.handleInput = function() {

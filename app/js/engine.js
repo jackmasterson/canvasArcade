@@ -102,7 +102,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
-
+      //  obstacle.update();
        /* model.allMowers().forEach(function(mower) {
             mower.update(dt);
         });*/
