@@ -90,14 +90,22 @@ canvas {
     margin-top: 20px;
 }
 
-#level {
+.level {
     background-image: url(..//images/mario.jpg);
-    background-size: 160px, 80px;
-    height: 80px;
-    width: 80px;
+    background-size: cover;
+    height: 20vh;
+    width: 20vh;
     border-radius: 250px;
-    margin-left: 25px;
-    padding: 10px;
+    position: absolute;
+    left: 3vw;
+    top: 3vh;
+    display: none;
+    
+}
+
+.level-num {
+    padding-top: 3vh;
+    font-size: 30px;
 }
 
 #champion {

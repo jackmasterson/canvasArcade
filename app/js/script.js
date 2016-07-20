@@ -58,7 +58,8 @@ var model = {
 	allEnemies: ko.observableArray(),
 	allObstacles: ko.observable(),
 //	allMowers: ko.observableArray(),
-	statScreen: ko.observable()
+	statScreen: ko.observable(),
+	level: ko.observable(1)
 };
 
 var viewModel = {
@@ -143,6 +144,7 @@ var playerSelect = {
 
 		$('.menu').fadeOut(function(){
 			$('canvas').fadeIn();
+			$('.level').fadeIn();
 		});
 	
 		startMeUp();
