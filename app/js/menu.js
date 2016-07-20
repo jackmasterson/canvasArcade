@@ -1,4 +1,4 @@
-
+ 
 //this is the code for the Game Menu
 
 var HTMLmenu = '<div id="menu"><h1>CHOOSE YOUR CHARACTER</h1><div id="standard"><h2>Standard</h2></div><div id="nonStandard"><h2>Non-Standard</h2></div></div>';
