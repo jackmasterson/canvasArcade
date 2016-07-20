@@ -202,7 +202,7 @@ var stats = {
 
 		if(len < 7){
 			var obstX, obstY;
-			obstX = Math.floor(Math.random() * 400);
+			obstX = Math.floor(Math.random() * 400) + 1;
 			obstY = Math.floor(Math.random() * 400);
 			obstacle = new Obstacle(obstX, obstY);		
 			model.allObstacles(obstacle);
@@ -232,11 +232,6 @@ Obstacle.prototype.update = function() {
 	if(equalX && equalY){
 		console.log('equal!');
 	}
-	console.log('ya');
-
-	//if((Math.floor(obstX/100)*100) == player.x){
-	//	console.log('equal!')
-	//} 
 }
 
 
