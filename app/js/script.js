@@ -66,10 +66,27 @@ var viewModel = {
 	
 	init: function(){
 		createBugs();
+		levelUp.init();
 
 	}
 
 };
+
+var levelUp = {
+
+	init: function() {
+		level = model.level();
+		console.log(level);
+	},
+
+	render: function() {
+		//console.log(this);
+		++level;
+		model.level(level);
+		//console.log(level);
+	}
+};
+
 var createBugs = function() {
 
 	model.enemies.forEach(function(en){
@@ -210,6 +227,7 @@ var stats = {
 			model.allObstacles(obstacle);
 			obstacle.update();
 		}	
+		levelUp.render();
 	},
 
 	render: function() {
