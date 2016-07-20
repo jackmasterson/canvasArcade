@@ -53,7 +53,6 @@ var model = {
 	],
 
 	allEnemies: ko.observableArray(),
-
 	statScreen: ko.observable("images/winner.jpg")
 };
 
@@ -140,10 +139,29 @@ Player.prototype.update = function(dt) {
         	model.statScreen("images/winner.jpg");
             stats.init();
         }
+
+        if((-1 < player.x) && (player.x < 401)){
+        	
+        }
+        else{
+        	console.log('out of bounds!');
+        	console.log(player.x);
+
+        }
+        if((-1 < player.y) && (player.y < 401)){
+        	
+        }
+        else {
+        	console.log('out of bounds!');
+        	console.log(player.y);
+        }
+
     });
 
 };
 
+x = [400, 310, 220, 130, 40]
+y = [0-400]
 
 var stats = {
 
