@@ -84,6 +84,14 @@ var levelUp = {
 		++level;
 		model.level(level);
 		//console.log(level);
+		if(level >3){
+			var obstX, obstY;
+			obstX = Math.ceil(Math.random() * 400) + 1;
+			obstY = Math.floor(Math.random() * 400) + 1;
+			obstacle = new Obstacle(obstX, obstY);		
+			model.allObstacles(obstacle);
+			obstacle.update();
+		}
 	}
 };
 
@@ -218,15 +226,7 @@ var stats = {
     	model.statScreen("images/winner.jpg");
 		stats.render();
 		var len = model.allEnemies().length;
-
-		if(len < 7){
-			var obstX, obstY;
-			obstX = Math.floor(Math.random() * 400) + 1;
-			obstY = Math.floor(Math.random() * 400);
-			obstacle = new Obstacle(obstX, obstY);		
-			model.allObstacles(obstacle);
-			obstacle.update();
-		}	
+	
 		levelUp.render();
 	},
 
