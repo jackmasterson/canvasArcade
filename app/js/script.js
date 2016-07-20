@@ -133,6 +133,8 @@ Player.prototype.update = function(dt) {
 
         if(equal && (player.y == en.y)) {
         	model.statScreen("images/loser.jpg");
+        	player.x = 200;
+        	player.y = 400;
             stats.init();
         }
         if(player.y == -50){
@@ -154,9 +156,6 @@ Player.prototype.update = function(dt) {
     });
 
 };
-
-x = [400, 310, 220, 130, 40]
-y = [0-400]
 
 var stats = {
 
