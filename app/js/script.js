@@ -77,8 +77,8 @@ var viewModel = {
 var lively = {
 
 	init: function() {
-		model.lives.push(['life', 'life', 'life']);
-		console.log(model.lives()[0]);
+		model.lives(['life', 'life', 'life']);
+		console.log(model.lives());
 
 	}
 }
@@ -228,8 +228,17 @@ var stats = {
         model.statScreen("images/loser.jpg");
        	player.x = 200;
        	player.y = 400;
-
-		stats.render();
+       
+    //   	console.log(model.lives());
+       	model.lives.shift();
+       	console.log(model.lives().length);
+       	if(model.lives().length === 0){
+       		stats.gameOver();
+       	}
+		else {
+       		stats.render();
+       	}
+		
 	},
 
 	winner: function() {
@@ -238,6 +247,13 @@ var stats = {
 		var len = model.allEnemies().length;
 	
 		levelUp.render();
+	},
+
+	gameOver: function(){
+		model.statScreen('images/gameover.jpg');
+		$('canvas').fadeOut(function(){
+			$('.stat').fadeIn();
+		});
 	},
 
 	render: function() {
