@@ -169,9 +169,9 @@ var Engine = (function(global) {
         });
 
         player.render();
-        model.allObstacles().forEach(function(obs){
-            obstacle.render();
-        });
+      //  model.allObstacles().forEach(function(obs){
+        obstacle.render();
+       // });
         
       /*  allObstacles.forEach(function(obstacle) {
             obstacle.render();

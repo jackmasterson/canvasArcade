@@ -56,7 +56,7 @@ var model = {
 	],
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
-	allObstacles: ko.observableArray(),
+	allObstacles: ko.observable(),
 //	allMowers: ko.observableArray(),
 	statScreen: ko.observable()
 };
@@ -194,13 +194,18 @@ var stats = {
     	model.statScreen("images/winner.jpg");
 		stats.render();
 		var len = model.allEnemies().length;
+
 		if(len < 7){
-			obstacle = new Obstacle(400, 200);
-			model.allObstacles.push(obstacle);
-			model.allObstacles().forEach(function(){
-				obstacle.render();
-			})
-		}
+
+			var obstX, obstY;
+			obstX = Math.floor(Math.random() * 400);
+			obstY = Math.floor(Math.random() * 400);
+			obstacle = new Obstacle(obstX, obstY);		
+			model.allObstacles(obstacle);
+			//console.log(model.allObstacles());
+
+
+		}	
 	},
 
 	render: function() {
@@ -208,11 +213,11 @@ var stats = {
 		$('.stat').slideDown(function(){
 			$('.stat').slideUp();
 		});
+		
 	}
 
 };
 
-var obstacle;
 
 Player.prototype.handleInput = function() {
 
@@ -253,6 +258,7 @@ Obstacle.prototype.render = function() {
 		this.x, this.y);
 };
 var player = new Player();
+var obstacle = new Obstacle();
 
 
 
