@@ -190,6 +190,7 @@ var playerSelect = {
 	
 	init: function(clicked) {
 		model.player.removeAll();
+		model.allObstacles.removeAll();
 		
 		model.level(1);
 
@@ -331,16 +332,6 @@ Obstacle.prototype.update = function() {
 			stats.loser();
 		}
 	})
-//	console.log(obst.x, obst.y);
-	var obstX = obst.x;
-	var obstY = obst.y;
-	
-	var equalX = obst.x == player.x;
-	var equalY = obst.y == playerY;
-	
-	if(equalX && equalY){
-		stats.loser();
-	}
 };
 
 
