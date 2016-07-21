@@ -99,11 +99,6 @@ var levelUp = {
 		var obstX = xArray[Math.floor(Math.random()
 			* xArray.length)];
 
-		var obst2Y = yArray[Math.floor(Math.random() 
-			* yArray.length)];
-		var obst2X = xArray[Math.floor(Math.random()
-			* xArray.length)];
-
 		if(level > 2){
 			
 			obstacle = new Obstacle(obstX, obstY);
@@ -143,14 +138,9 @@ var Enemy = function(y, name) {
 	var that = this;
 	var time, enemyNum;
 	
-	if(name == 'bug'){
+
 		this.sprite = 'images/enemy-bug.png';
 		this.y = y;
-	}
-	else{
-		this.sprite = 'images/mower.png';
-		this.y = 310;
-	}
 	
 	this.x = 100;
 };
@@ -222,6 +212,7 @@ var playerSelect = {
 	init: function(clicked) {
 		model.player.removeAll();
 		model.allObstacles.removeAll();
+		model.allMowers.removeAll();
 		
 		model.level(1);
 
@@ -249,7 +240,19 @@ Player.prototype.update = function(dt) {
             stats.loser();
         }
     });
+    model.allMowers().forEach(function(mow){
+    	
 
+    	mowFloor = Math.floor(mow.x/100)*100;
+    	mowCeil = Math.ceil(mow.x);
+
+
+    	var equal = player.x == ( mowFloor || mowCeil );
+
+    	if(equal && (player.y == mow.y)){
+    		stats.loser();
+    	}
+    });
     if(model.allObstacles() !== undefined){
     	obstacle.update();
     //	obst2.update();
@@ -298,7 +301,7 @@ var stats = {
 		if(currentLevel === 4){
 			model.lives.push('life');
 		}
-		if(currentLevel === 7){
+		if(currentLevel === 10){
 			stats.gameWon();
 		}
 		else{
