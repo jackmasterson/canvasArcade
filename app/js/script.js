@@ -66,29 +66,36 @@ var model = {
 var viewModel = {
 	
 	init: function(){
-		createBugs();
+		viewModel.createBugs();
 		canvas = document.createElement('canvas');
+	},
 
+	//initial menu actions, once player selects a character
+	playerSelect: function(clicked) {
+		model.player.removeAll();
+		model.allObstacles.removeAll();
+		model.allMowers.removeAll();
+		
+		model.level(1);
 
-	}
+		model.player.push(clicked.src);
 
-};
+		$('.menu').fadeOut(function(){
+			$('canvas').fadeIn();
+			$('.level').fadeIn();
+			$('.lives').fadeIn();
+		});
+		
+		viewModel.levelInit();
+		viewModel.addLives();
+		startMeUp();
+	},
 
-var lively = {
-
-	init: function() {
-		model.lives(['life', 'life', 'life']);
-
-	}
-};
-
-var levelUp = {
-
-	init: function() {
+	levelInit: function() {
 		level = model.level();
 	},
 
-	render: function() {
+	levelUp: function() {
 
 		++level;
 		model.level(level);
@@ -119,19 +126,26 @@ var levelUp = {
 				mow.render();
 			})
 		}
+	},
+
+	addLives: function() {
+
+		model.lives(['life', 'life', 'life']);
+	},
+
+	createBugs: function() {
+		model.enemies.forEach(function(en){
+			if(en.name == 'bug'){
+				en.pos.forEach(function(posit){
+					model.allEnemies.push(new Enemy(posit, 'bug'));
+				})
+			}
+		});
 	}
+
 };
 
-var createBugs = function() {
 
-	model.enemies.forEach(function(en){
-		if(en.name == 'bug'){
-			en.pos.forEach(function(posit){
-				model.allEnemies.push(new Enemy(posit, 'bug'));
-			})
-		}
-	});
-};
 
 
 var Enemy = function(y, name) {
@@ -143,29 +157,6 @@ var Enemy = function(y, name) {
 		this.y = y;
 	
 	this.x = 100;
-};
-
-Enemy.prototype.update = function() {
-    var time = new Date().getTime() * (0.0002);
-    var len = model.allEnemies().length;
-    var enemyNum;
-
-    for (var i = 0; i < len; i++) {
-    	var speed = (Math.tan(time * enemyNum) * 600 + 100);
-        enemyNum = i + 1;
-        en = model.allEnemies()[i];
-        en.x = speed;
-  		if(en.sprite == 'images/mower.png'){
-  			en.x = -speed;
-  		}
-    }
-};
-
-
-// Draw the enemy on the screen
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite),
-        this.x, this.y);
 };
 
 var Player = function() {
@@ -188,6 +179,21 @@ var Mower = function() {
 	this.y = 310;
 };
 
+Enemy.prototype.update = function() {
+    var time = new Date().getTime() * (0.0002);
+    var len = model.allEnemies().length;
+    var enemyNum;
+
+    for (var i = 0; i < len; i++) {
+    	var speed = (Math.tan(time * enemyNum) * 600 + 100);
+        enemyNum = i + 1;
+        en = model.allEnemies()[i];
+        en.x = speed;
+  		if(en.sprite == 'images/mower.png'){
+  			en.x = -speed;
+  		}
+    }
+};
 
 Mower.prototype.update = function() {
     var time = new Date().getTime() * (0.0002);
@@ -200,36 +206,10 @@ Mower.prototype.update = function() {
         
         en = model.allMowers()[i];
         en.x = -speed;
-        //en.x = -speed;
-  		//if(en.sprite == 'images/mower.png'){
-  		//	en.x = -speed;
-  		//}
     }
 };
 
-var playerSelect = {
-	
-	init: function(clicked) {
-		model.player.removeAll();
-		model.allObstacles.removeAll();
-		model.allMowers.removeAll();
-		
-		model.level(1);
-
-		model.player.push(clicked.src);
-
-		$('.menu').fadeOut(function(){
-			$('canvas').fadeIn();
-			$('.level').fadeIn();
-			$('.lives').fadeIn();
-		});
-		
-		levelUp.init();
-		lively.init();
-		startMeUp();
-	}
-};
-
+//updates the player and collision detection
 Player.prototype.update = function(dt) {
     
     model.allEnemies().forEach(function(en){
@@ -237,7 +217,7 @@ Player.prototype.update = function(dt) {
 
         if(equal && (player.y == en.y)) {
 
-            stats.loser();
+            statsView.loser();
         }
     });
     model.allMowers().forEach(function(mow){
@@ -250,7 +230,7 @@ Player.prototype.update = function(dt) {
     	var equal = player.x == ( mowFloor || mowCeil );
 
     	if(equal && (player.y == mow.y)){
-    		stats.loser();
+    		statsView.loser();
     	}
     });
     if(model.allObstacles() !== undefined){
@@ -267,16 +247,36 @@ Player.prototype.update = function(dt) {
 
     if(-1 > player.y){
     	player.y=400;
-    	stats.winner();
+    	statsView.winner();
     }
     if(player.y > 401){
     	player.y = 400;
     }
-
-
 };
 
-var stats = {
+// Draw the enemy on the screen
+Enemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite),
+        this.x, this.y);
+};
+
+Obstacle.prototype.update = function() {
+
+	var obst = model.allObstacles();
+	var playerY = player.y + 90;
+	obst.forEach(function(each){
+
+		equalX = each.x == player.x;
+		equalY = each.y == playerY;
+		if(equalX && equalY){
+			statsView.loser();
+		}
+	})
+};
+
+//updates depending on if the player
+//wins, loses, beats the game, games over, etc
+var statsView = {
 
 	loser: function() {
         model.statScreen("images/loser.jpg");
@@ -285,10 +285,10 @@ var stats = {
        
        	model.lives.shift();
        	if(model.lives().length === 0){
-       		stats.gameOver();
+       		statsView.gameOver();
        	}
 		else {
-       		stats.render();
+       		statsView.render();
        	}
 		
 	},
@@ -302,12 +302,12 @@ var stats = {
 			model.lives.push('life');
 		}
 		if(currentLevel === 10){
-			stats.gameWon();
+			statsView.gameWon();
 		}
 		else{
-			stats.render();
+			statsView.render();
 		}
-		levelUp.render();
+		viewModel.levelUp();
 	},
 
 	gameOver: function(){
@@ -336,6 +336,8 @@ var stats = {
 
 };
 
+//if the user wants to play again after 
+//a game over or beating the game
 var retry = {
 
 	init: function(){
@@ -351,24 +353,28 @@ var retry = {
 	}
 };
 
-Obstacle.prototype.update = function() {
 
-	var obst = model.allObstacles();
-	var playerY = player.y + 90;
-	obst.forEach(function(each){
 
-		equalX = each.x == player.x;
-		equalY = each.y == playerY;
-	//	console.log(each.x, each.y, 'each!');
-	//	console.log(player.x, playerY, 'player!')
-		if(equalX && equalY){
-			//console.log('EQUALLL');
-			stats.loser();
-		}
-	})
+Player.prototype.render = function() {
+	
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Obstacle.prototype.render = function() {
+	
+	ctx.drawImage(Resources.get(this.sprite),
+		this.x, this.y);
+};
+
+Mower.prototype.render = function() {
+
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 
+
+//next two functions add listeners so the player moves correctly
+//on keyups
 Player.prototype.handleInput = function() {
 
     if (event.keyCode == 37) {
@@ -397,28 +403,9 @@ document.addEventListener('keyup', function(e) {
 
 });
 
-Player.prototype.render = function() {
-	
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-Obstacle.prototype.render = function() {
-	
-	ctx.drawImage(Resources.get(this.sprite),
-		this.x, this.y);
-};
-
-Mower.prototype.render = function() {
-
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 var mower = new Mower();
 var player = new Player();
 var obstacle = new Obstacle();
-//var obst2 = new Obstacle();
-
-
 
 
 

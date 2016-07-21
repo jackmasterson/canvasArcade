@@ -13,7 +13,7 @@
     <div class="menu">
         <h1>Choose Your Character</h1>  
         <div data-bind="foreach: model.characters">
-            <ul data-bind="click: playerSelect.init, attr: {'class': classed}, css: {charIndiv: name}">
+            <ul data-bind="click: viewModel.playerSelect, attr: {'class': classed}, css: {charIndiv: name}">
                 <li class="char-indiv">
                     <img class="char-img" data-bind="attr: {src: src}">
                 </li>
