@@ -69,6 +69,7 @@ var viewModel = {
 		createBugs();
 		levelUp.init();
 		lively.init();
+		canvas = document.createElement('canvas');
 
 	}
 
@@ -77,8 +78,9 @@ var viewModel = {
 var lively = {
 
 	init: function() {
-		model.lives(['life', 'life', 'life']);
+		model.lives(['life']);//, 'life', 'life']);
 		console.log(model.lives());
+
 
 	}
 }
@@ -178,7 +180,6 @@ var Obstacle = function(x, y) {
 var playerSelect = {
 	
 	init: function(clicked) {
-
 		model.player.removeAll();
 
 		model.player.push(clicked.src);
@@ -293,9 +294,9 @@ var stats = {
 var retry = {
 
 	init: function(){
-		var cvs = $('canvas');
-		ctx.clearRect(0, 0, cvs.width, cvs.height);
-		$('canvas').stop();
+		var canvas = $('canvas');
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 		$('.stat').fadeOut(function(){
 			$('.menu').fadeIn();
 		});
