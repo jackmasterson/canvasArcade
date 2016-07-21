@@ -102,10 +102,26 @@ var viewModel = {
 		model.level(level);
 		var yArray = [400, 310, 220, 130, 40]
 		var xArray = [400, 300, 200, 100]
-		var obstY = yArray[Math.floor(Math.random() 
-			* yArray.length)];
-		var obstX = xArray[Math.floor(Math.random()
-			* xArray.length)];
+		var coordY, coordX;
+
+		function randX(){
+
+			coordX = xArray[Math.floor(Math.random()
+				* xArray.length)];
+
+			return coordX;
+
+		};
+
+		function randY(){
+
+			coordY = yArray[Math.floor(Math.random() 
+				* yArray.length)];
+
+			return coordY;
+		}
+
+		
 
 		var gemY = yArray[Math.floor(Math.random() 
 			* yArray.length)];
@@ -114,7 +130,7 @@ var viewModel = {
 
 		if(level > 2){
 			
-			obstacle = new Obstacle(obstX, obstY);
+			obstacle = new Obstacle(randX(), randY());
 			model.allObstacles.push(obstacle);
 			console.log(model.allObstacles());
 
@@ -122,7 +138,7 @@ var viewModel = {
 				obst.update();
 				obst.render();
 			});
-			gemAdd = new Gem(gemX, gemY);
+			gemAdd = new Gem(randX(), randY());
 			model.gems.removeAll();
 			model.gems.push(gemAdd);
 			model.gems().forEach(function(gem){
