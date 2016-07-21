@@ -171,8 +171,14 @@ function startMeUp(){
             });
 
             player.render();
-          //  model.allObstacles().forEach(function(obs){
-            obstacle.render();
+            model.allObstacles().forEach(function(obs){
+                 obs.render();
+             });
+           
+ 
+        
+
+         //   obst2.render();
            // });
             
           /*  allObstacles.forEach(function(obstacle) {

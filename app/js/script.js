@@ -56,7 +56,7 @@ var model = {
 	],
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
-	allObstacles: ko.observable(),
+	allObstacles: ko.observableArray(),
 	lives: ko.observableArray(),
 //	allMowers: ko.observableArray(),
 	statScreen: ko.observable(),
@@ -68,6 +68,7 @@ var viewModel = {
 	init: function(){
 		createBugs();
 		canvas = document.createElement('canvas');
+
 
 	}
 
@@ -98,11 +99,25 @@ var levelUp = {
 		var obstX = xArray[Math.floor(Math.random()
 			* xArray.length)];
 
+		var obst2Y = yArray[Math.floor(Math.random() 
+			* yArray.length)];
+		var obst2X = xArray[Math.floor(Math.random()
+			* xArray.length)];
+
 		if(level > 2){
-		
-			obstacle = new Obstacle(obstX, obstY);		
-			model.allObstacles(obstacle);
-			obstacle.update();
+			
+			obstacle = new Obstacle(obstX, obstY);
+			model.allObstacles.push(obstacle);
+			console.log(model.allObstacles());
+		//	obst2 = new Obstacle(obst2X, obst2Y);		
+			//model.allObstacles(obstacle);
+
+			model.allObstacles().forEach(function(obst){
+				obst.update();
+				obst.render();
+			})
+			
+			//obst2.update();
 		}
 	}
 };
@@ -175,17 +190,19 @@ var playerSelect = {
 	
 	init: function(clicked) {
 		model.player.removeAll();
+		
+		model.level(1);
 
 		model.player.push(clicked.src);
-		model.level(1);
-		levelUp.init();
-		lively.init();
+
 		$('.menu').fadeOut(function(){
 			$('canvas').fadeIn();
 			$('.level').fadeIn();
 			$('.lives').fadeIn();
 		});
-	
+		
+		levelUp.init();
+		lively.init();
 		startMeUp();
 	}
 };
@@ -203,6 +220,7 @@ Player.prototype.update = function(dt) {
 
     if(model.allObstacles() !== undefined){
     	obstacle.update();
+    //	obst2.update();
     }
 
     if(-1 > player.x){
@@ -287,6 +305,9 @@ var retry = {
 
 	init: function(){
 		var canvas = $('canvas');
+		//model.allObstacles() === {};
+	//	model.allObstacles({});
+		
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 		$('.stat').fadeOut(function(){
@@ -350,6 +371,8 @@ Obstacle.prototype.render = function() {
 };
 var player = new Player();
 var obstacle = new Obstacle();
+//var obst2 = new Obstacle();
+
 
 
 
