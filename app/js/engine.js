@@ -106,7 +106,7 @@ function startMeUp(){
             player.update();
 
             model.allMowers().forEach(function(mow){
-                
+
                 mow.update(dt);
             });
           //  obstacle.update();
@@ -183,6 +183,10 @@ function startMeUp(){
             model.allMowers().forEach(function(mow){
                 mow.render();
             });
+
+            model.gems().forEach(function(gem){
+                gem.render();
+            })
            
  
         
@@ -230,6 +234,7 @@ function startMeUp(){
             'images/ram.png',
             'images/cat.png',
             'images/ironman.png',
+            'images/gem.png',
         ]);
         Resources.onReady(init);
 

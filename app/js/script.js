@@ -60,7 +60,8 @@ var model = {
 	lives: ko.observableArray(),
 	allMowers: ko.observableArray(),
 	statScreen: ko.observable(),
-	level: ko.observable(1)
+	level: ko.observable(1),
+	gems: ko.observableArray()
 };
 
 var viewModel = {
@@ -106,6 +107,11 @@ var viewModel = {
 		var obstX = xArray[Math.floor(Math.random()
 			* xArray.length)];
 
+		var gemY = yArray[Math.floor(Math.random() 
+			* yArray.length)];
+		var gemX = xArray[Math.floor(Math.random()
+			* xArray.length)];
+
 		if(level > 2){
 			
 			obstacle = new Obstacle(obstX, obstY);
@@ -116,6 +122,14 @@ var viewModel = {
 				obst.update();
 				obst.render();
 			});
+			gemAdd = new Gem(gemX, gemY);
+			model.gems.removeAll();
+			model.gems.push(gemAdd);
+			model.gems().forEach(function(gem){
+				gem.render();
+				gem.update();
+
+			})
 		}
 
 		if(level > 4){
@@ -125,6 +139,7 @@ var viewModel = {
 				mow.update();
 				mow.render();
 			})
+
 		}
 	},
 
@@ -177,6 +192,12 @@ var Mower = function() {
 	this.sprite = 'images/mower.png';
 	this.x = 450;
 	this.y = 310;
+};
+
+var Gem = function(x, y) {
+	this.sprite = 'images/gem.png';
+	this.x = x;
+	this.y = y;
 };
 
 Enemy.prototype.update = function() {
@@ -254,11 +275,6 @@ Player.prototype.update = function(dt) {
     }
 };
 
-// Draw the enemy on the screen
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite),
-        this.x, this.y);
-};
 
 Obstacle.prototype.update = function() {
 
@@ -272,6 +288,10 @@ Obstacle.prototype.update = function() {
 			statsView.loser();
 		}
 	})
+};
+
+Gem.prototype.update = function() {
+
 };
 
 //updates depending on if the player
@@ -367,6 +387,17 @@ Obstacle.prototype.render = function() {
 };
 
 Mower.prototype.render = function() {
+
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// Draw the enemy on the screen
+Enemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite),
+        this.x, this.y);
+};
+
+Gem.prototype.render = function() {
 
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
