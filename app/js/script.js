@@ -67,8 +67,6 @@ var viewModel = {
 	
 	init: function(){
 		createBugs();
-		levelUp.init();
-		lively.init();
 		canvas = document.createElement('canvas');
 
 	}
@@ -78,12 +76,11 @@ var viewModel = {
 var lively = {
 
 	init: function() {
-		model.lives(['life']);//, 'life', 'life']);
-		console.log(model.lives());
-
+		model.lives(['life', 'life', 'life']);
 
 	}
-}
+};
+
 var levelUp = {
 
 	init: function() {
@@ -94,7 +91,6 @@ var levelUp = {
 
 		++level;
 		model.level(level);
-	//	console.log(Math.random() * 10);
 		var yArray = [400, 310, 220, 130, 40]
 		var xArray = [400, 300, 200, 100]
 		var obstY = yArray[Math.floor(Math.random() 
@@ -139,8 +135,6 @@ var Enemy = function(y, name) {
 	this.x = 100;
 };
 
-//var allEnemies = [new Enemy(), new Enemy()];
-
 Enemy.prototype.update = function() {
     var time = new Date().getTime() * (0.0002);
     var len = model.allEnemies().length;
@@ -157,7 +151,7 @@ Enemy.prototype.update = function() {
     }
 };
 
-// Draw the enemy on the screen, required method for game
+// Draw the enemy on the screen
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite),
         this.x, this.y);
@@ -183,7 +177,9 @@ var playerSelect = {
 		model.player.removeAll();
 
 		model.player.push(clicked.src);
-
+		model.level(1);
+		levelUp.init();
+		lively.init();
 		$('.menu').fadeOut(function(){
 			$('canvas').fadeIn();
 			$('.level').fadeIn();
@@ -194,9 +190,6 @@ var playerSelect = {
 	}
 };
 
-
- //detects collisions with obstacles and enemies
-//needs refactoring
 Player.prototype.update = function(dt) {
     
     model.allEnemies().forEach(function(en){
@@ -237,9 +230,7 @@ var stats = {
        	player.x = 200;
        	player.y = 400;
        
-    //   	console.log(model.lives());
        	model.lives.shift();
-       	console.log(model.lives().length);
        	if(model.lives().length === 0){
        		stats.gameOver();
        	}
@@ -278,6 +269,7 @@ var stats = {
 		model.statScreen('images/champion.jpg');
 		$('canvas').fadeOut(function(){
 			$('.stat').fadeIn();
+			$('.again').fadeIn();
 		})
 	},
 
@@ -304,13 +296,11 @@ var retry = {
 };
 
 Obstacle.prototype.update = function() {
-	//console.log(model.allObstacles());
+
 	var obst = model.allObstacles();
 	var obstX = obst.x;
 	var obstY = obst.y;
 	var playerY = player.y + 90;
-	console.log(obst.y, "obstacle y");
-	console.log(player.y, "player y");
 	var equalX = obst.x == player.x;
 	var equalY = obst.y == playerY;
 	
