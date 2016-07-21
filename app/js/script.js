@@ -58,7 +58,7 @@ var model = {
 	allEnemies: ko.observableArray(),
 	allObstacles: ko.observableArray(),
 	lives: ko.observableArray(),
-//	allMowers: ko.observableArray(),
+	allMowers: ko.observableArray(),
 	statScreen: ko.observable(),
 	level: ko.observable(1)
 };
@@ -109,15 +109,20 @@ var levelUp = {
 			obstacle = new Obstacle(obstX, obstY);
 			model.allObstacles.push(obstacle);
 			console.log(model.allObstacles());
-		//	obst2 = new Obstacle(obst2X, obst2Y);		
-			//model.allObstacles(obstacle);
 
 			model.allObstacles().forEach(function(obst){
 				obst.update();
 				obst.render();
+			});
+		}
+
+		if(level > 4){
+			mower = new Mower();
+			model.allMowers.push(mower);
+			model.allMowers().forEach(function(mow){
+				mow.update();
+				mow.render();
 			})
-			
-			//obst2.update();
 		}
 	}
 };
@@ -166,6 +171,7 @@ Enemy.prototype.update = function() {
     }
 };
 
+
 // Draw the enemy on the screen
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite),
@@ -184,6 +190,31 @@ var Obstacle = function(x, y) {
 	this.sprite = ["images/enemy.png"];
 	this.x = x;
 	this.y = y;
+};
+
+var Mower = function() {
+	this.sprite = 'images/mower.png';
+	this.x = 450;
+	this.y = 310;
+};
+
+
+Mower.prototype.update = function() {
+    var time = new Date().getTime() * (0.0002);
+    var len = model.allMowers().length;
+    var enemyNum;
+
+    for (var i = 0; i < len; i++) {
+    	enemyNum = i + 1;
+    	var speed = (Math.tan(time * enemyNum) * 600 + 100);
+        
+        en = model.allMowers()[i];
+        en.x = -speed;
+        //en.x = -speed;
+  		//if(en.sprite == 'images/mower.png'){
+  		//	en.x = -speed;
+  		//}
+    }
 };
 
 var playerSelect = {
@@ -373,6 +404,13 @@ Obstacle.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite),
 		this.x, this.y);
 };
+
+Mower.prototype.render = function() {
+
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+var mower = new Mower();
 var player = new Player();
 var obstacle = new Obstacle();
 //var obst2 = new Obstacle();

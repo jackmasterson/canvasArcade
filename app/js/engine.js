@@ -104,6 +104,11 @@ function startMeUp(){
                 enemy.update(dt);
             });
             player.update();
+
+            model.allMowers().forEach(function(mow){
+                
+                mow.update(dt);
+            });
           //  obstacle.update();
            /* model.allMowers().forEach(function(mower) {
                 mower.update(dt);
@@ -174,6 +179,10 @@ function startMeUp(){
             model.allObstacles().forEach(function(obs){
                  obs.render();
              });
+
+            model.allMowers().forEach(function(mow){
+                mow.render();
+            });
            
  
         
