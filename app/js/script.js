@@ -319,9 +319,22 @@ var retry = {
 Obstacle.prototype.update = function() {
 
 	var obst = model.allObstacles();
+	var playerY = player.y + 90;
+	obst.forEach(function(each){
+
+		equalX = each.x == player.x;
+		equalY = each.y == playerY;
+	//	console.log(each.x, each.y, 'each!');
+	//	console.log(player.x, playerY, 'player!')
+		if(equalX && equalY){
+			//console.log('EQUALLL');
+			stats.loser();
+		}
+	})
+//	console.log(obst.x, obst.y);
 	var obstX = obst.x;
 	var obstY = obst.y;
-	var playerY = player.y + 90;
+	
 	var equalX = obst.x == player.x;
 	var equalY = obst.y == playerY;
 	
