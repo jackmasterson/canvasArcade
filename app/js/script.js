@@ -37,23 +37,6 @@ var model = {
 			classed: 'ironman'
 		}
 	],
-	enemies: [
-		{
-			name: 'bug',
-			src: 'images/enemy-bug.png',
-			pos: [40, 130, 220, 40, 130]
-		},
-		{
-			name: 'mower',
-			src: 'images/mower.png',
-			pos: [310]
-		},
-		{
-			name: 'obstacle',
-			src: 'images/monster.png',
-			pos: [40, 130, 220]
-		}
-	],
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
 	allObstacles: ko.observableArray(),
@@ -120,16 +103,13 @@ var viewModel = {
 		for(var i = 0; i < 3; i++){
 			model.lives.push('life');
 		}
-
 	},
 
 	createBugs: function() {
-		model.enemies.forEach(function(en){
-			if(en.name == 'bug'){
-				en.pos.forEach(function(posit){
-					model.allEnemies.push(new Enemy(posit, 'bug'));
-				})
-			}
+		var posit = [40, 130, 220, 40, 130];
+
+		posit.forEach(function(eachPos){
+			model.allEnemies.push(new Enemy(eachPos));
 		});
 	},
 
@@ -167,8 +147,12 @@ var viewModel = {
 		
 		allTypes.push(type);
 		allTypes().forEach(function(each){
-			each.update();
-			each.render();
+			console.log(each);
+			if(each.sprite !== 'images/gem.png'){
+				each.update();
+				each.render();
+			}
+
 		});
 	},
 
@@ -190,11 +174,21 @@ var viewModel = {
 	        	en.x = -speed;
 	        }    
 		}
+	},
+
+	retry: function(){
+		var canvas = $('canvas');
+		
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		$('.stat').fadeOut(function(){
+			$('.menu').fadeIn();
+		});
 	}
 
 };
 
-var Enemy = function(y, name) {
+var Enemy = function(y) {
 
 	this.sprite = 'images/enemy-bug.png';
 	this.y = y;
@@ -210,7 +204,7 @@ var Player = function() {
 
 var Obstacle = function(x, y) {
 
-	this.sprite = ["images/enemy.png"];
+	this.sprite = "images/enemy.png";
 	this.x = x;
 	this.y = y;
 };
@@ -252,10 +246,6 @@ Player.prototype.update = function(dt) {
     	});
     });
 
-    if(model.allObstacles() !== undefined){
-    	obstacle.update();
-    }
-
     if(-1 > player.x){
     	player.x = 0;
     }
@@ -277,8 +267,8 @@ Obstacle.prototype.update = function() {
 
 	var obst = model.allObstacles();
 	var playerY = player.y + 90;
+	
 	obst.forEach(function(each){
-
 		equalX = each.x == player.x;
 		equalY = each.y == playerY;
 		if(equalX && equalY){
@@ -287,9 +277,6 @@ Obstacle.prototype.update = function() {
 	})
 };
 
-Gem.prototype.update = function() {
-
-};
 
 //updates depending on if the player
 //wins, loses, beats the game, games over, etc
@@ -319,14 +306,10 @@ var statsView = {
 		if(currentLevel === 4){
 			model.lives.push('life');
 		}
-
 		if(currentLevel === 6){
 			statsView.gameWon();
 		}
-
-		else{
 			statsView.render();
-		}
 
 		if(model.allObstacles() !== undefined){
 	    	obstacle.update();
@@ -359,21 +342,6 @@ var statsView = {
 		
 	}
 
-};
-
-//if the user wants to play again after 
-//a game over or beating the game
-var retry = {
-
-	init: function(){
-		var canvas = $('canvas');
-		
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-		$('.stat').fadeOut(function(){
-			$('.menu').fadeIn();
-		});
-	}
 };
 
 

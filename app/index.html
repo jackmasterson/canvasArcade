@@ -25,7 +25,7 @@
     </div>
     <div class="stat" data-bind="if: model.statScreen">
         <img class="stat-img" data-bind="attr: {src: model.statScreen}">
-        <button class="again" data-bind="click: retry.init">Start Over</button>
+        <button class="again" data-bind="click: viewModel.retry">Start Over</button>
     </div>
     <div class="level fade-in">
         <h3>Level:</h3>
