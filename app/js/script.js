@@ -208,7 +208,38 @@ var Gem = function(x, y) {
 	this.y = y;
 };
 
-Enemy.prototype.update = function() {
+function speedEval(type){
+	var time = new Date().getTime() * (0.0002);
+	var len = eval('model.all'+type+'().length');
+	var enemyNum;
+
+	for(var i=0; i < len; i++){
+		var speed = (Math.tan(time * enemyNum) * 600 + 100);
+        enemyNum = i + 1;
+        en = eval('model.all' + type + '()[i]');
+        if(type === 'Enemies'){
+        	en.x = speed;
+        }
+        if(type === 'Mowers'){
+        	en.x = -speed;
+        }
+        
+	}
+};
+
+Enemy.prototype.update= function(){
+
+	speedEval('Enemies');
+
+};
+
+Mower.prototype.update = function(){
+
+	speedEval('Mowers')
+
+}
+
+/*Enemy.prototype.update = function() {
     var time = new Date().getTime() * (0.0002);
     var len = model.allEnemies().length;
     var enemyNum;
@@ -218,9 +249,6 @@ Enemy.prototype.update = function() {
         enemyNum = i + 1;
         en = model.allEnemies()[i];
         en.x = speed;
-  		if(en.sprite == 'images/mower.png'){
-  			en.x = -speed;
-  		}
     }
 };
 
@@ -236,7 +264,10 @@ Mower.prototype.update = function() {
         en = model.allMowers()[i];
         en.x = -speed;
     }
-};
+};*/
+
+
+
 
 //updates the player and collision detection
 Player.prototype.update = function(dt) {
