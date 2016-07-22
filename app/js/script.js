@@ -98,7 +98,7 @@ var viewModel = {
 	},
 
 	addLives: function() {
-
+		model.lives.removeAll();
 		for(var i = 0; i < 3; i++){
 			model.lives.push('life');
 		}
@@ -305,10 +305,13 @@ var statsView = {
 		if(currentLevel === 4){
 			model.lives.push('life');
 		}
+		if(currentLevel < 6){
+			statsView.render();
+		}
 		if(currentLevel === 6){
 			statsView.gameWon();
 		}
-			statsView.render();
+			
 
 		viewModel.levelUp();
 	},
