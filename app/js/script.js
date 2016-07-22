@@ -57,11 +57,13 @@ var model = {
 	player: ko.observableArray(),
 	allEnemies: ko.observableArray(),
 	allObstacles: ko.observableArray(),
-	lives: ko.observableArray(),
 	allMowers: ko.observableArray(),
+	allGems: ko.observableArray(),
+	
+	lives: ko.observableArray(),
 	statScreen: ko.observable(),
-	level: ko.observable(1),
-	gems: ko.observableArray()
+	level: ko.observable(1)
+	
 };
 
 var viewModel = {
@@ -71,12 +73,20 @@ var viewModel = {
 		canvas = document.createElement('canvas');
 	},
 
+	clearIt: function(){
+		var which = ['player', 'allObstacles', 'allMowers', 'allGems'];
+		which.forEach(function(each){
+			console.log(each);
+			var itemToClear = eval('model.' + each + '.removeAll()');
+			console.log(itemToClear);
+			return itemToClear;
+		})
+		
+	},
+
 	//initial menu actions, once player selects a character
 	playerSelect: function(clicked) {
-		model.player.removeAll();
-		model.allObstacles.removeAll();
-		model.allMowers.removeAll();
-		model.gems.removeAll();
+		viewModel.clearIt();
 		
 		model.level(1);
 
@@ -105,38 +115,43 @@ var viewModel = {
 		var xArray = [400, 300, 200, 100]
 		var coordY, coordX;
 
-		function randX(){
-			coordX = xArray[Math.floor(Math.random()
-				* xArray.length)];
-			return coordX;
+		function randCoord(){
+
+			function floorIt(coordArray){
+				coordArray = eval(coordArray);
+				console.log(coordArray);
+				console.log(coordArray.length);
+				return coordArray[Math.floor(Math.random() 
+					* coordArray.length)];
+			}
+
+			coordX = floorIt(xArray);
+			coordY = floorIt(yArray);
+
+			return [coordX, coordY];
 
 		};
 
-		function randY(){
-			coordY = yArray[Math.floor(Math.random() 
-				* yArray.length)];
-			return coordY;
-		}
-
 		if(level > 2){
-			
-			obstacle = new Obstacle(randX(), randY());
-			gemAdd = new Gem(randX(), randY());
+			var x = randCoord()[0];
+			var y = randCoord()[1];
 
+			obstacle = new Obstacle(x, y);
 			model.allObstacles.push(obstacle);
-			model.gems.removeAll();
-			model.gems.push(gemAdd);
-	
+
+			gem = new Gem(x, y);
+			model.allGems.removeAll();
+			model.allGems.push(gem);
+			
 			model.allObstacles().forEach(function(obst){
 				obst.update();
 				obst.render();
 			});
 
-			model.gems().forEach(function(gem){
-				gem.render();
-				gem.update();
-
-			})
+			model.allGems().forEach(function(gems){
+				gems.render();
+				gems.update();
+			});
 		}
 
 		if(level > 4){
@@ -146,7 +161,7 @@ var viewModel = {
 			model.allMowers().forEach(function(mow){
 				mow.update();
 				mow.render();
-			})
+			});
 
 		}
 	},
@@ -217,54 +232,24 @@ function speedEval(type){
 		var speed = (Math.tan(time * enemyNum) * 600 + 100);
         enemyNum = i + 1;
         en = eval('model.all' + type + '()[i]');
+        
         if(type === 'Enemies'){
         	en.x = speed;
         }
         if(type === 'Mowers'){
         	en.x = -speed;
-        }
-        
+        }    
+
 	}
 };
 
 Enemy.prototype.update= function(){
-
 	speedEval('Enemies');
-
 };
 
 Mower.prototype.update = function(){
-
 	speedEval('Mowers')
-
-}
-
-/*Enemy.prototype.update = function() {
-    var time = new Date().getTime() * (0.0002);
-    var len = model.allEnemies().length;
-    var enemyNum;
-
-    for (var i = 0; i < len; i++) {
-    	var speed = (Math.tan(time * enemyNum) * 600 + 100);
-        enemyNum = i + 1;
-        en = model.allEnemies()[i];
-        en.x = speed;
-    }
 };
-
-Mower.prototype.update = function() {
-    var time = new Date().getTime() * (0.0002);
-    var len = model.allMowers().length;
-    var enemyNum;
-
-    for (var i = 0; i < len; i++) {
-    	enemyNum = i + 1;
-    	var speed = (Math.tan(time * enemyNum) * 600 + 100);
-        
-        en = model.allMowers()[i];
-        en.x = -speed;
-    }
-};*/
 
 
 
@@ -360,7 +345,7 @@ var statsView = {
 		if(currentLevel === 4){
 			model.lives.push('life');
 		}
-		if(currentLevel === 10){
+		if(currentLevel === 3){
 			statsView.gameWon();
 		}
 		else{

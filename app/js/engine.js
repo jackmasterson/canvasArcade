@@ -184,7 +184,7 @@ function startMeUp(){
                 mow.render();
             });
 
-            model.gems().forEach(function(gem){
+            model.allGems().forEach(function(gem){
                 gem.render();
             })
            
