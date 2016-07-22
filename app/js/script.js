@@ -269,6 +269,7 @@ Obstacle.prototype.update = function() {
 	var playerY = player.y + 90;
 	
 	obst.forEach(function(each){
+		console.log(each);
 		equalX = each.x == player.x;
 		equalY = each.y == playerY;
 		if(equalX && equalY){
@@ -310,10 +311,6 @@ var statsView = {
 			statsView.gameWon();
 		}
 			statsView.render();
-
-		if(model.allObstacles() !== undefined){
-	    	obstacle.update();
-	    }
 
 		viewModel.levelUp();
 	},
@@ -390,6 +387,10 @@ Player.prototype.handleInput = function() {
     }
     if (event.keyCode == 40) {
         this.y += 90;
+    }
+    
+	if(model.allObstacles() !== undefined){
+    	obstacle.update();
     }
 };
 
