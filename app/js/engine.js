@@ -106,14 +106,10 @@ function startMeUp(){
             });
             player.update();
 
-            model.allMowers().forEach(function(mow){
 
+            model.allMowers().forEach(function(mow){
                 mow.update(dt);
             });
-          //  obstacle.update();
-           /* model.allMowers().forEach(function(mower) {
-                mower.update(dt);
-            });*/
 
         }
 
@@ -227,7 +223,7 @@ function startMeUp(){
             'images/char-boy.png',
             'images/char-cat-girl.png',
             'images/loser.jpg',
-            'images/enemy.png',
+            'images/obstacle.png',
             'images/mower.png',
             'images/lives.png',
             'images/char-horn-girl.png',

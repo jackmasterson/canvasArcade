@@ -27,9 +27,13 @@
         <img class="stat-img" data-bind="attr: {src: model.statScreen}">
         <button class="again" data-bind="click: viewModel.retry">Start Over</button>
     </div>
-    <div class="level fade-in">
+    <div class="counter level fade-in">
         <h3>Level:</h3>
         <h4 class="level-num" data-bind="text: model.level"></h4>
+    </div>
+    <div class="counter points fade-in">
+        <h3>Points:</h3>
+        <h4 class="level-num" data-bind="text: model.points"></h4>
     </div>
     <div class="lives fade-in" data-bind="foreach: model.lives">
         <img class="lives-img" src="images/char-boy.png">

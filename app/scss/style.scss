@@ -90,17 +90,25 @@ canvas {
     margin-top: 20px;
 }
 
-.level {
-    background-image: url(..//images/mario.jpg);
-    background-size: cover;
+.counter {
     height: 20vh;
     width: 20vh;
     border-radius: 250px;
     position: absolute;
+    display: none;   
+}
+
+.level {
+    background-image: url(..//images/mario.jpg);
+    background-size: cover;
     left: 3vw;
     top: 3vh;
-    display: none;
-    
+}
+
+.points {
+    background-color: gold;
+    right: 3vw;
+    top: 3vh;
 }
 
 .level-num {

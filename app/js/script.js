@@ -44,7 +44,8 @@ var model = {
 	allGems: ko.observableArray(),
 	lives: ko.observableArray(),
 	statScreen: ko.observable(),
-	level: ko.observable(1)
+	level: ko.observable(1),
+	points: ko.observable(0)
 	
 };
 
@@ -71,6 +72,10 @@ var viewModel = {
 		viewModel.clearIt();
 		model.level(1);
 		level = model.level();
+
+		model.points(0);
+		points = model.points();
+
 		model.player.push(clicked.src);
 
 		$('.menu').fadeOut(function(){
@@ -84,7 +89,9 @@ var viewModel = {
 	levelUp: function() {
 
 		++level;
+		
 		model.level(level);
+		
 
 		if(level > 1){
 			model.allGems.removeAll();
@@ -95,6 +102,12 @@ var viewModel = {
 		if(level > 2){
 			viewModel.createEnemies('mower');
 		}
+	},
+
+	addPoints: function() {
+		points = points + 10;
+		model.points(points);
+		console.log(points, model.points());
 	},
 
 	addLives: function() {
@@ -145,13 +158,9 @@ var viewModel = {
 		}
 		
 		allTypes.push(type);
-		allTypes().forEach(function(each){
-			console.log(each);
-			if(each.sprite !== 'images/gem.png'){
-				each.update();
-				each.render();
-			}
-
+		allTypes().forEach(function(each){	
+			each.update();
+			each.render();
 		});
 	},
 
@@ -203,7 +212,7 @@ var Player = function() {
 
 var Obstacle = function(x, y) {
 
-	this.sprite = "images/enemy.png";
+	this.sprite = "images/obstacle.png";
 	this.x = x;
 	this.y = y;
 };
@@ -228,7 +237,6 @@ Mower.prototype.update = function(){
 	viewModel.speedEval('Mowers')
 };
 
-//updates the player and collision detection
 Player.prototype.update = function(dt) {
     var eachEn = ['model.allEnemies()', 'model.allMowers()'];
     eachEn.forEach(function(each){
@@ -253,6 +261,7 @@ Player.prototype.update = function(dt) {
     }
 
     if(-1 > player.y){
+    	player.x=200;
     	player.y=400;
     	statsView.winner();
     }
@@ -272,6 +281,22 @@ Obstacle.prototype.update = function() {
 		equalY = each.y == playerY;
 		if(equalX && equalY){
 			statsView.loser();
+		}
+	});
+};
+
+Gem.prototype.update = function() {
+
+	var gems = model.allGems();
+
+	gems.forEach(function(gem){
+		var equalX = gem.x == player.x;
+		var equalY = gem.y == player.y;
+
+
+		if(equalX && equalY){
+			model.allGems.removeAll();
+			viewModel.addPoints();
 		}
 	})
 };
@@ -312,8 +337,8 @@ var statsView = {
 			statsView.gameWon();
 		}
 			
-
 		viewModel.levelUp();
+		viewModel.addPoints();
 	},
 
 	gameOver: function(){
@@ -390,9 +415,11 @@ Player.prototype.handleInput = function() {
         this.y += 90;
     }
 
-	if(model.allObstacles() !== undefined){
+	
     	obstacle.update();
-    }
+    	gem.update();
+
+    
 };
 
 document.addEventListener('keyup', function(e) {
@@ -409,6 +436,7 @@ document.addEventListener('keyup', function(e) {
 
 var player = new Player();
 var obstacle = new Obstacle();
+var gem = new Gem();
 
 
 
