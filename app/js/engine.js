@@ -34,6 +34,7 @@ function startMeUp(){
 
         doc.body.appendChild(canvas);
         $('canvas').addClass('canvas');
+        $('canvas').addClass('fade-in');
 
 
         /* This function serves as the kickoff point for the game loop itself

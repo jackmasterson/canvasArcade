@@ -27,11 +27,11 @@
         <img class="stat-img" data-bind="attr: {src: model.statScreen}">
         <button class="again" data-bind="click: retry.init">Start Over</button>
     </div>
-    <div class="level">
+    <div class="level fade-in">
         <h3>Level:</h3>
         <h4 class="level-num" data-bind="text: model.level"></h4>
     </div>
-    <div class="lives" data-bind="foreach: model.lives">
+    <div class="lives fade-in" data-bind="foreach: model.lives">
         <img class="lives-img" src="images/char-boy.png">
     </div>
     <!--build:js js/script.min.js-->

@@ -75,36 +75,26 @@ var viewModel = {
 
 	clearIt: function(){
 		var which = ['player', 'allObstacles', 'allMowers', 'allGems'];
-		which.forEach(function(each){
-			console.log(each);
-			var itemToClear = eval('model.' + each + '.removeAll()');
-			console.log(itemToClear);
-			return itemToClear;
-		})
 		
+		which.forEach(function(each){
+			var itemToClear = eval('model.' + each + '.removeAll()');
+			return itemToClear;
+		});
 	},
 
-	//initial menu actions, once player selects a character
 	playerSelect: function(clicked) {
+		//starts the game over on playerSelect
 		viewModel.clearIt();
-		
 		model.level(1);
-
+		level = model.level();
 		model.player.push(clicked.src);
 
 		$('.menu').fadeOut(function(){
-			$('canvas').fadeIn();
-			$('.level').fadeIn();
-			$('.lives').fadeIn();
+			$('.fade-in').fadeIn();
 		});
 		
-		viewModel.levelInit();
 		viewModel.addLives();
 		startMeUp();
-	},
-
-	levelInit: function() {
-		level = model.level();
 	},
 
 	levelUp: function() {
@@ -119,8 +109,6 @@ var viewModel = {
 
 			function floorIt(coordArray){
 				coordArray = eval(coordArray);
-				console.log(coordArray);
-				console.log(coordArray.length);
 				return coordArray[Math.floor(Math.random() 
 					* coordArray.length)];
 			}
@@ -130,38 +118,42 @@ var viewModel = {
 
 			return [coordX, coordY];
 
+		};			
+
+		function create(type){
+			var rand = randCoord();
+			var x = rand[0];
+			var y = rand[1];
+			var capFirst = type[0].toUpperCase();
+			var capStr = capFirst + type.substring(1);
+			var make = eval(capStr);
+			var allTypes = eval('model.all'+capStr+'s');
+			if(type !== 'mower'){
+				type = new make(x,y);
+			}
+			else{
+				type = new make()
+			}
+			
+			allTypes.push(type);
+			allTypes().forEach(function(each){
+				each.update();
+				each.render();
+			})
+			
 		};
 
-		if(level > 2){
-			var x = randCoord()[0];
-			var y = randCoord()[1];
+		if(level > 1){
 
-			obstacle = new Obstacle(x, y);
-			model.allObstacles.push(obstacle);
-
-			gem = new Gem(x, y);
 			model.allGems.removeAll();
-			model.allGems.push(gem);
-			
-			model.allObstacles().forEach(function(obst){
-				obst.update();
-				obst.render();
-			});
 
-			model.allGems().forEach(function(gems){
-				gems.render();
-				gems.update();
-			});
+			create('obstacle');
+			create('gem');
 		}
 
-		if(level > 4){
+		if(level > 2){
 
-			mower = new Mower();
-			model.allMowers.push(mower);
-			model.allMowers().forEach(function(mow){
-				mow.update();
-				mow.render();
-			});
+			create('mower');
 
 		}
 	},
@@ -169,6 +161,7 @@ var viewModel = {
 	addLives: function() {
 
 		model.lives(['life', 'life', 'life']);
+
 	},
 
 	createBugs: function() {
@@ -183,17 +176,10 @@ var viewModel = {
 
 };
 
-
-
-
 var Enemy = function(y, name) {
-	var that = this;
-	var time, enemyNum;
-	
 
-		this.sprite = 'images/enemy-bug.png';
-		this.y = y;
-	
+	this.sprite = 'images/enemy-bug.png';
+	this.y = y;
 	this.x = 100;
 };
 
@@ -345,7 +331,7 @@ var statsView = {
 		if(currentLevel === 4){
 			model.lives.push('life');
 		}
-		if(currentLevel === 3){
+		if(currentLevel === 6){
 			statsView.gameWon();
 		}
 		else{
