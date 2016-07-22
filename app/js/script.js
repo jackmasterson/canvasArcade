@@ -74,10 +74,12 @@ var viewModel = {
 	},
 
 	clearIt: function(){
-		var which = ['player', 'allObstacles', 'allMowers', 'allGems'];
+		var which = ['player', 'allObstacles', 
+			'allMowers', 'allGems'];
 		
 		which.forEach(function(each){
-			var itemToClear = eval('model.' + each + '.removeAll()');
+			var itemToClear = eval('model.' + each + 
+				'.removeAll()');
 			return itemToClear;
 		});
 	},
@@ -101,66 +103,23 @@ var viewModel = {
 
 		++level;
 		model.level(level);
-		var yArray = [400, 310, 220, 130, 40]
-		var xArray = [400, 300, 200, 100]
-		var coordY, coordX;
-
-		function randCoord(){
-
-			function floorIt(coordArray){
-				coordArray = eval(coordArray);
-				return coordArray[Math.floor(Math.random() 
-					* coordArray.length)];
-			}
-
-			coordX = floorIt(xArray);
-			coordY = floorIt(yArray);
-
-			return [coordX, coordY];
-
-		};			
-
-		function create(type){
-			var rand = randCoord();
-			var x = rand[0];
-			var y = rand[1];
-			var capFirst = type[0].toUpperCase();
-			var capStr = capFirst + type.substring(1);
-			var make = eval(capStr);
-			var allTypes = eval('model.all'+capStr+'s');
-			if(type !== 'mower'){
-				type = new make(x,y);
-			}
-			else{
-				type = new make()
-			}
-			
-			allTypes.push(type);
-			allTypes().forEach(function(each){
-				each.update();
-				each.render();
-			})
-			
-		};
 
 		if(level > 1){
-
 			model.allGems.removeAll();
-
-			create('obstacle');
-			create('gem');
+			viewModel.createEnemies('obstacle');
+			viewModel.createEnemies('gem');
 		}
 
 		if(level > 2){
-
-			create('mower');
-
+			viewModel.createEnemies('mower');
 		}
 	},
 
 	addLives: function() {
 
-		model.lives(['life', 'life', 'life']);
+		for(var i = 0; i < 3; i++){
+			model.lives.push('life');
+		}
 
 	},
 
@@ -172,6 +131,65 @@ var viewModel = {
 				})
 			}
 		});
+	},
+
+	randCoord: function(){
+		function floorIt(coordArray){
+			coordArray = eval(coordArray);
+			return coordArray[Math.floor(Math.random() 
+				* coordArray.length)];
+		};
+
+		var yArray = [400, 310, 220, 130, 40]
+		var xArray = [400, 300, 200, 100]
+		var coordX = floorIt(xArray);
+		var coordY = floorIt(yArray);
+
+		return [coordX, coordY];
+	},
+
+	createEnemies: function(type) {
+
+		var rand = viewModel.randCoord();
+		var x = rand[0];
+		var y = rand[1];
+		var capFirst = type[0].toUpperCase();
+		var capStr = capFirst + type.substring(1);
+		var make = eval(capStr);
+		var allTypes = eval('model.all'+capStr+'s');
+
+		if(type !== 'mower'){
+			type = new make(x,y);
+		}
+		else{
+			type = new make();
+		}
+		
+		allTypes.push(type);
+		allTypes().forEach(function(each){
+			each.update();
+			each.render();
+		});
+	},
+
+	speedEval: function(type) {
+
+		var time = new Date().getTime() * (0.0002);
+		var len = eval('model.all'+type+'().length');
+		var enemyNum;
+
+		for(var i=0; i < len; i++){
+			var speed = (Math.tan(time * enemyNum) * 600 + 100);
+	        enemyNum = i + 1;
+	        en = eval('model.all' + type + '()[i]');
+	        
+	        if(type === 'Enemies'){
+	        	en.x = speed;
+	        }
+	        if(type === 'Mowers'){
+	        	en.x = -speed;
+	        }    
+		}
 	}
 
 };
@@ -209,64 +227,33 @@ var Gem = function(x, y) {
 	this.y = y;
 };
 
-function speedEval(type){
-	var time = new Date().getTime() * (0.0002);
-	var len = eval('model.all'+type+'().length');
-	var enemyNum;
-
-	for(var i=0; i < len; i++){
-		var speed = (Math.tan(time * enemyNum) * 600 + 100);
-        enemyNum = i + 1;
-        en = eval('model.all' + type + '()[i]');
-        
-        if(type === 'Enemies'){
-        	en.x = speed;
-        }
-        if(type === 'Mowers'){
-        	en.x = -speed;
-        }    
-
-	}
-};
-
 Enemy.prototype.update= function(){
-	speedEval('Enemies');
+	viewModel.speedEval('Enemies');
 };
 
 Mower.prototype.update = function(){
-	speedEval('Mowers')
+	viewModel.speedEval('Mowers')
 };
-
-
-
 
 //updates the player and collision detection
 Player.prototype.update = function(dt) {
-    
-    model.allEnemies().forEach(function(en){
-        var equal = player.x == (Math.floor(en.x/100)*100 || Math.ceil(en.x));
+    var eachEn = ['model.allEnemies()', 'model.allMowers()'];
+    eachEn.forEach(function(each){
+    	each = eval(each);
+    	each.forEach(function(en){
+	        var enFloor = Math.floor(en.x/100)*100;
+	        var enCeil = Math.ceil(en.x);
+	        var equal = (player.x == ( enFloor || enCeil )
+	        	&& player.y == en.y);
 
-        if(equal && (player.y == en.y)) {
-
-            statsView.loser();
-        }
+	        if(equal) {
+	            statsView.loser();
+	        }		
+    	});
     });
-    model.allMowers().forEach(function(mow){
-    	
 
-    	mowFloor = Math.floor(mow.x/100)*100;
-    	mowCeil = Math.ceil(mow.x);
-
-
-    	var equal = player.x == ( mowFloor || mowCeil );
-
-    	if(equal && (player.y == mow.y)){
-    		statsView.loser();
-    	}
-    });
     if(model.allObstacles() !== undefined){
     	obstacle.update();
-    //	obst2.update();
     }
 
     if(-1 > player.x){
@@ -328,15 +315,23 @@ var statsView = {
 		
 		var len = model.allEnemies().length;
 		var currentLevel = model.level() + 1;
+
 		if(currentLevel === 4){
 			model.lives.push('life');
 		}
+
 		if(currentLevel === 6){
 			statsView.gameWon();
 		}
+
 		else{
 			statsView.render();
 		}
+
+		if(model.allObstacles() !== undefined){
+	    	obstacle.update();
+	    }
+
 		viewModel.levelUp();
 	},
 
@@ -372,8 +367,6 @@ var retry = {
 
 	init: function(){
 		var canvas = $('canvas');
-		//model.allObstacles() === {};
-	//	model.allObstacles({});
 		
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
