@@ -57,7 +57,7 @@ var viewModel = {
 
 	clearIt: function(){
 		var which = ['player', 'allObstacles', 
-			'allMowers', 'allGems'];
+			'allMowers', 'allGems', 'lives'];
 		
 		which.forEach(function(each){
 			var itemToClear = eval('model.' + each + 
@@ -98,7 +98,7 @@ var viewModel = {
 	},
 
 	addLives: function() {
-		model.lives.removeAll();
+
 		for(var i = 0; i < 3; i++){
 			model.lives.push('life');
 		}
