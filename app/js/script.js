@@ -42,7 +42,6 @@ var model = {
 	allObstacles: ko.observableArray(),
 	allMowers: ko.observableArray(),
 	allGems: ko.observableArray(),
-	
 	lives: ko.observableArray(),
 	statScreen: ko.observable(),
 	level: ko.observable(1)
@@ -113,7 +112,7 @@ var viewModel = {
 		});
 	},
 
-	randCoord: function(){
+	generateRandomCoord: function(){
 		function floorIt(coordArray){
 			coordArray = eval(coordArray);
 			return coordArray[Math.floor(Math.random() 
@@ -130,7 +129,7 @@ var viewModel = {
 
 	createEnemies: function(type) {
 
-		var rand = viewModel.randCoord();
+		var rand = viewModel.generateRandomCoord();
 		var x = rand[0];
 		var y = rand[1];
 		var capFirst = type[0].toUpperCase();
@@ -269,7 +268,6 @@ Obstacle.prototype.update = function() {
 	var playerY = player.y + 90;
 	
 	obst.forEach(function(each){
-		console.log(each);
 		equalX = each.x == player.x;
 		equalY = each.y == playerY;
 		if(equalX && equalY){
@@ -388,7 +386,7 @@ Player.prototype.handleInput = function() {
     if (event.keyCode == 40) {
         this.y += 90;
     }
-    
+
 	if(model.allObstacles() !== undefined){
     	obstacle.update();
     }
@@ -406,7 +404,6 @@ document.addEventListener('keyup', function(e) {
 
 });
 
-var mower = new Mower();
 var player = new Player();
 var obstacle = new Obstacle();
 
