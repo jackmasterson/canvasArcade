@@ -76,6 +76,7 @@ var viewModel = {
 		model.player.removeAll();
 		model.allObstacles.removeAll();
 		model.allMowers.removeAll();
+		model.gems.removeAll();
 		
 		model.level(1);
 
@@ -105,42 +106,32 @@ var viewModel = {
 		var coordY, coordX;
 
 		function randX(){
-
 			coordX = xArray[Math.floor(Math.random()
 				* xArray.length)];
-
 			return coordX;
 
 		};
 
 		function randY(){
-
 			coordY = yArray[Math.floor(Math.random() 
 				* yArray.length)];
-
 			return coordY;
 		}
-
-		
-
-		var gemY = yArray[Math.floor(Math.random() 
-			* yArray.length)];
-		var gemX = xArray[Math.floor(Math.random()
-			* xArray.length)];
 
 		if(level > 2){
 			
 			obstacle = new Obstacle(randX(), randY());
-			model.allObstacles.push(obstacle);
-			console.log(model.allObstacles());
+			gemAdd = new Gem(randX(), randY());
 
+			model.allObstacles.push(obstacle);
+			model.gems.removeAll();
+			model.gems.push(gemAdd);
+	
 			model.allObstacles().forEach(function(obst){
 				obst.update();
 				obst.render();
 			});
-			gemAdd = new Gem(randX(), randY());
-			model.gems.removeAll();
-			model.gems.push(gemAdd);
+
 			model.gems().forEach(function(gem){
 				gem.render();
 				gem.update();
@@ -149,6 +140,7 @@ var viewModel = {
 		}
 
 		if(level > 4){
+
 			mower = new Mower();
 			model.allMowers.push(mower);
 			model.allMowers().forEach(function(mow){
