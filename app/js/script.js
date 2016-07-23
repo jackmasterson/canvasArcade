@@ -143,7 +143,6 @@ var viewModel = {
 		var rand = viewModel.generateRandomCoord();
 		var x = rand[0];
 		var y = rand[1];
-		console.log(type, x, y);
 		var capFirst = type[0].toUpperCase();
 		var capStr = capFirst + type.substring(1);
 		var make = eval(capStr);
@@ -158,7 +157,6 @@ var viewModel = {
 		
 		allTypes.push(type);
 		allTypes().forEach(function(each){	
-			each.update();
 			each.render();
 		});
 	},
@@ -195,13 +193,10 @@ var viewModel = {
 	        	if(en.sprite !=='images/gem.png'){
 	        		statsView.loser();
 	        	}
-	        	console.log(en.sprite);
 	        	if(en.sprite == 'images/gem.png'){
 	        		model.allGems.removeAll();
 	        		viewModel.addPoints();
-
 	        	}
-	        	
 	        }		
     	});
 	},
@@ -279,19 +274,7 @@ Player.prototype.update = function(dt) {
     }
     if(player.y > 401){
     	player.y = 400;
-    }
-
-    
-};
-
-
-Obstacle.prototype.update = function() {
-
-};
-
-Gem.prototype.update = function() {
-	
-
+    }   
 };
 
 
@@ -306,7 +289,9 @@ var statsView = {
        
        	model.lives.shift();
        	if(model.lives().length === 0){
-       		statsView.gameOver();
+       		model.statScreen(false);
+       		model.statScreen('images/gameover.jpg');
+       		statsView.gameStatus();
        	}
 		else {
        		statsView.render();
@@ -323,31 +308,24 @@ var statsView = {
 		if(currentLevel === 4){
 			model.lives.push('life');
 		}
-		if(currentLevel < 6){
+		if(currentLevel < 8){
 			statsView.render();
 		}
-		if(currentLevel === 6){
-			statsView.gameWon();
+		if(currentLevel === 8){
+			model.statScreen(false);
+			model.statScreen('images/champion.jpg');
+			statsView.gameStatus();
 		}
 			
 		viewModel.levelUp();
 		viewModel.addPoints();
 	},
 
-	gameOver: function(){
-		model.statScreen('images/gameover.jpg');
+	gameStatus: function() {
 		$('canvas').fadeOut(function(){
 			$('.stat').fadeIn();
 			$('.again').fadeIn();
 		});
-	},
-
-	gameWon: function() {
-		model.statScreen('images/champion.jpg');
-		$('canvas').fadeOut(function(){
-			$('.stat').fadeIn();
-			$('.again').fadeIn();
-		})
 	},
 
 	render: function() {
@@ -355,16 +333,15 @@ var statsView = {
 		$('.stat').slideDown(function(){
 			$('.stat').slideUp();
 		});
-		
 	}
-
 };
 
 
 
 Player.prototype.render = function() {
 	
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), 
+    	this.x, this.y);
 };
 
 Obstacle.prototype.render = function() {
@@ -375,7 +352,8 @@ Obstacle.prototype.render = function() {
 
 Mower.prototype.render = function() {
 
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+	ctx.drawImage(Resources.get(this.sprite), 
+		this.x, this.y);
 };
 
 // Draw the enemy on the screen
@@ -386,7 +364,8 @@ Enemy.prototype.render = function() {
 
 Gem.prototype.render = function() {
 
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+	ctx.drawImage(Resources.get(this.sprite), 
+		this.x, this.y);
 };
 
 //next two functions add listeners so the player moves correctly
