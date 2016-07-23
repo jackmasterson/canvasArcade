@@ -194,11 +194,14 @@ var viewModel = {
 	        if(equal) {
 	        	if(en.sprite !=='images/gem.png'){
 	        		statsView.loser();
-	        		console.log(enFloor, enCeil, en.x, 'floor');
 	        	}
-	        	else {
+	        	console.log(en.sprite);
+	        	if(en.sprite == 'images/gem.png'){
+	        		model.allGems.removeAll();
 	        		viewModel.addPoints();
+
 	        	}
+	        	
 	        }		
     	});
 	},
@@ -261,6 +264,7 @@ Player.prototype.update = function(dt) {
 	viewModel.collision(model.allMowers());
 	viewModel.collision(model.allEnemies());
 	viewModel.collision(model.allGems());
+
     if(-1 > player.x){
     	player.x = 0;
     }
@@ -276,6 +280,8 @@ Player.prototype.update = function(dt) {
     if(player.y > 401){
     	player.y = 400;
     }
+
+    
 };
 
 
@@ -285,7 +291,6 @@ Obstacle.prototype.update = function() {
 
 Gem.prototype.update = function() {
 	
-	viewModel.addPoints();
 
 };
 
