@@ -223,7 +223,7 @@ function startMeUp(){
             'images/char-boy.png',
             'images/char-cat-girl.png',
             'images/loser.jpg',
-            'images/obstacle.png',
+            'images/rock.png',
             'images/mower.png',
             'images/lives.png',
             'images/char-horn-girl.png',

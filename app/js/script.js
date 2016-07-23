@@ -91,7 +91,6 @@ var viewModel = {
 		++level;
 		
 		model.level(level);
-		
 
 		if(level > 1){
 			model.allGems.removeAll();
@@ -107,7 +106,6 @@ var viewModel = {
 	addPoints: function() {
 		points = points + 10;
 		model.points(points);
-		console.log(points, model.points());
 	},
 
 	addLives: function() {
@@ -145,6 +143,7 @@ var viewModel = {
 		var rand = viewModel.generateRandomCoord();
 		var x = rand[0];
 		var y = rand[1];
+		console.log(type, x, y);
 		var capFirst = type[0].toUpperCase();
 		var capStr = capFirst + type.substring(1);
 		var make = eval(capStr);
@@ -184,6 +183,26 @@ var viewModel = {
 		}
 	},
 
+	collision: function(which) {
+
+    	which.forEach(function(en){
+	        var enFloor = Math.floor(en.x/100)*100;
+	        var enCeil = Math.ceil(en.x);
+	        var equal = (player.x == ( enFloor || enCeil )
+	        	&& player.y == en.y);
+
+	        if(equal) {
+	        	if(en.sprite !=='images/gem.png'){
+	        		statsView.loser();
+	        		console.log(enFloor, enCeil, en.x, 'floor');
+	        	}
+	        	else {
+	        		viewModel.addPoints();
+	        	}
+	        }		
+    	});
+	},
+
 	retry: function(){
 		var canvas = $('canvas');
 		
@@ -212,7 +231,7 @@ var Player = function() {
 
 var Obstacle = function(x, y) {
 
-	this.sprite = "images/obstacle.png";
+	this.sprite = "images/rock.png";
 	this.x = x;
 	this.y = y;
 };
@@ -238,21 +257,10 @@ Mower.prototype.update = function(){
 };
 
 Player.prototype.update = function(dt) {
-    var eachEn = ['model.allEnemies()', 'model.allMowers()'];
-    eachEn.forEach(function(each){
-    	each = eval(each);
-    	each.forEach(function(en){
-	        var enFloor = Math.floor(en.x/100)*100;
-	        var enCeil = Math.ceil(en.x);
-	        var equal = (player.x == ( enFloor || enCeil )
-	        	&& player.y == en.y);
-
-	        if(equal) {
-	            statsView.loser();
-	        }		
-    	});
-    });
-
+	viewModel.collision(model.allObstacles());
+	viewModel.collision(model.allMowers());
+	viewModel.collision(model.allEnemies());
+	viewModel.collision(model.allGems());
     if(-1 > player.x){
     	player.x = 0;
     }
@@ -273,32 +281,12 @@ Player.prototype.update = function(dt) {
 
 Obstacle.prototype.update = function() {
 
-	var obst = model.allObstacles();
-	var playerY = player.y + 90;
-	
-	obst.forEach(function(each){
-		equalX = each.x == player.x;
-		equalY = each.y == playerY;
-		if(equalX && equalY){
-			statsView.loser();
-		}
-	});
 };
 
 Gem.prototype.update = function() {
+	
+	viewModel.addPoints();
 
-	var gems = model.allGems();
-
-	gems.forEach(function(gem){
-		var equalX = gem.x == player.x;
-		var equalY = gem.y == player.y;
-
-
-		if(equalX && equalY){
-			model.allGems.removeAll();
-			viewModel.addPoints();
-		}
-	})
 };
 
 
@@ -396,8 +384,6 @@ Gem.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
-
 //next two functions add listeners so the player moves correctly
 //on keyups
 Player.prototype.handleInput = function() {
@@ -415,14 +401,11 @@ Player.prototype.handleInput = function() {
         this.y += 90;
     }
 
-	
-    	obstacle.update();
-    	gem.update();
-
-    
+ 
 };
 
 document.addEventListener('keyup', function(e) {
+    
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -437,8 +420,6 @@ document.addEventListener('keyup', function(e) {
 var player = new Player();
 var obstacle = new Obstacle();
 var gem = new Gem();
-
-
 
 
 ko.applyBindings(viewModel.init());
