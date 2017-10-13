@@ -1,5 +1,24 @@
 const store = {
-    visuals: {}
+    visuals: {},
+    defaults: [{
+        type: 'hero',
+        src: 'char-boy',
+        category: 'good',
+        amt: 1,
+        pos: [200, 371]
+    }, {
+        type: 'bug',
+        category: 'enemy',
+        src: 'enemy-bug',
+        amt: 3,
+        pos: [0, 39]
+    }, {
+        type: 'mower',
+        category: 'enemy',
+        src: 'mower',
+        amt: 2,
+        pos: [0, 371]
+    }]
 }
 let level = 0;
 
@@ -12,25 +31,7 @@ const create = {
     visuals: function(newGame) {
         // stubbed
         let selected = 'char-boy';
-        let defaults = [{
-            type: 'hero',
-            src: 'char-boy',
-            category: 'good',
-            amt: 1,
-            pos: [200, 371]
-        }, {
-            type: 'bug',
-            category: 'enemy',
-            src: 'enemy-bug',
-            amt: 3,
-            pos: [0, 39]
-        }, {
-            type: 'mower',
-            category: 'enemy',
-            src: 'mower',
-            amt: 2,
-            pos: [0, 371]
-        }];
+        let defaults = store.defaults;
         let nextLevel = {};
 
         newGame ? defaults : nextLevel;
