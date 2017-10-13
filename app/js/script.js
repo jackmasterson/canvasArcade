@@ -171,7 +171,7 @@ var viewModel = {
 			var speed = (Math.tan(time * enemyNum) * 600 + 100);
 	        enemyNum = i + 1;
 	        en = eval('model.all' + type + '()[i]');
-	        
+	        console.log('en: ', en);
 	        if(type === 'Enemies'){
 	        	en.x = speed;
 	        }

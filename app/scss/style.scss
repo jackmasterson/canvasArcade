@@ -20,10 +20,6 @@ h4 {
     margin: 0;
 }
 
-canvas {
-    display: none;
-}
-
 #loser {
     display: none;
     float: left;
@@ -148,11 +144,7 @@ canvas {
 }
 
 .menu {
-    background-color: gold;
-    height: 400px;
-    width: 700px;
-    margin: auto;
-    border-radius: 15px;
+    display: none;
 }
 
 #charIn {

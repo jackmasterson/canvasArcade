@@ -25,13 +25,10 @@ function startMeUp(){
             win = global.window,
             ctx = canvas.getContext('2d'),
 
-
             lastTime;
-
 
         canvas.width = 505;
         canvas.height = 606;
-
         doc.body.appendChild(canvas);
         $('canvas').addClass('canvas');
         $('canvas').addClass('fade-in');
@@ -65,7 +62,9 @@ function startMeUp(){
             /* Use the browser's requestAnimationFrame function to call this
              * function again as soon as the browser is able to draw another frame.
              */
-            win.requestAnimationFrame(main);
+            // setTimeout(function() {
+                win.requestAnimationFrame(main);
+            // }, 200);
         }
 
         /* This function does some initial setup that should only occur once,
@@ -76,6 +75,7 @@ function startMeUp(){
             reset();
             lastTime = Date.now();
             main();
+            create.visuals(true);
         }
 
         /* This function is called by main (our game loop) and itself calls all
@@ -100,16 +100,24 @@ function startMeUp(){
          * render methods.
          */
         function updateEntities(dt) {
-            
-            model.allEnemies().forEach(function(enemy) {
-                enemy.update(dt);
-            });
-            player.update();
+            let keys = Object.keys(store.visuals);
+            for (let keyed of keys) {
+                let visuals = store.visuals[keyed];
+                for (let vis of visuals) {
+                    // if (vis.category !== 'good') {
+                        vis.update(vis, dt);
+                    // }
+                }
+            }
+            // model.allEnemies().forEach(function(enemy) {
+            //     enemy.update(dt);
+            // });
+            // // player.update();
 
 
-            model.allMowers().forEach(function(mow){
-                mow.update(dt);
-            });
+            // model.allMowers().forEach(function(mow){
+            //     mow.update(dt);
+            // });
 
         }
 
@@ -141,6 +149,7 @@ function startMeUp(){
              * and, using the rowImages array, draw the correct image for that
              * portion of the "grid"
              */
+
             for (row = 0; row < numRows; row++) {
                 for (col = 0; col < numCols; col++) {
                     /* The drawImage function of the canvas' context element
@@ -151,7 +160,7 @@ function startMeUp(){
                      * we're using them over and over.
                      */
                     ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
-                    
+                    // ctx.drawImage(Resources.get('images/char-boy.png'), 50, 50);
                 }
             }
 
@@ -168,26 +177,12 @@ function startMeUp(){
             /* Loop through all of the objects within the allEnemies array and call
              * the render function you have defined.
              */
-            model.allEnemies().forEach(function(enemy) {
-                enemy.render();
-            });
-
-            player.render();
-            model.allObstacles().forEach(function(obs){
-                 obs.render();
-             });
-
-            model.allMowers().forEach(function(mow){
-                mow.render();
-            });
-
-            model.allGems().forEach(function(gem){
-                gem.render();
-            })
            
  
-        
 
+            if (store.visuals && store.runIt) {
+                work.drawVisualsOnCanvas();
+            }
          //   obst2.render();
            // });
             
