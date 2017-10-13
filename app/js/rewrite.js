@@ -20,8 +20,14 @@ const store = {
         pos: [0, 371]
     }]
 }
-let level = 0;
 
+let level = 1;
+let lev = document.getElementById('level');
+lev.innerHTML = level;
+
+let lives = 3;
+let liv = document.getElementById('lives');
+liv.innerHTML = lives;
 const create = {
     canvas: function() {
 
@@ -151,12 +157,16 @@ const movements = {
         let bugs = visuals.bug;
         let mowers = visuals.mower;
         let xMargin = 15;
+        let liv = document.getElementById('lives');
+
         for (let bug of bugs) {
             let withinY = Math.abs(bug.y - hero.y) === 0;
             let withinX = Math.abs(bug.x - hero.x) < xMargin;
             if (withinY && withinX) {
                 hero.x = 200;
                 hero.y = 53 * 7;
+                --lives;
+                liv.innerHTML = lives;
             }
         }
 
@@ -165,15 +175,30 @@ const movements = {
             let withinX = Math.abs(mower.x - hero.x) < xMargin;
             if (withinY && withinX) {
                 console.log('loser!');
-                hero.x = 200;
+                hero.x = 300;
                 hero.y = 53 * 7;
+                --lives;
+                liv.innerHTML = lives;
+                
             }
+        }
+        if (liv.innerHTML === '0') {
+            document.getElementsByTagName('canvas')[0].style.display = 'none';
+            let d = document.createElement('div');
+            d.innerHTML = 'GAME. OVER. YOU. LOSE';
+            d.style.color = 'red';
+            document.body.appendChild(d);
+            return;
+
         }
     }
 }
 
 const reward = {
     winner: function(obj) {
+        ++level;
+        let lev = document.getElementById('level');
+        lev.innerHTML = level;
         console.log('winner!');
         obj.y = 53 * 7;
         obj.x = 200;

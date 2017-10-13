@@ -79,11 +79,14 @@ h4 {
   position: absolute;
   display: none; }
 
-.level {
+#level {
   background-image: url(..//images/mario.jpg);
   background-size: cover;
+  position: fixed;
   left: 3vw;
-  top: 3vh; }
+  top: 3vh;
+  height: 150px;
+  width: 150px; }
 
 .points {
   background-color: gold;
@@ -94,13 +97,13 @@ h4 {
   padding-top: 3vh;
   font-size: 30px; }
 
-.lives {
-  height: 5vh;
-  width: 12vw;
-  position: absolute;
-  bottom: 12vh;
-  right: 24vw;
-  display: none; }
+#lives {
+  height: 150px;
+  width: 150px;
+  position: fixed;
+  bottom: 150px;
+  right: 150px;
+  color: red; }
 
 .lives-img {
   height: 5vh;
